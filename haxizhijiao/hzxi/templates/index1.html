@@ -64,8 +64,9 @@
 				})
 			})
 			/*点击注册*/
-			$("body").on("click","#zhuce",function(){	
-				var gh=$("#gonghao").val();
+			$("body").on("click","#zhuce",function(){
+
+			    var gh=$("#gonghao").val();
 				var name=$("#xinming").val();
 				var paw=$("#mima").val();
 				var paw2=$("#mima2").val();
@@ -75,22 +76,23 @@
 					if(paw==paw2){
 						$.ajax({
 						type: "POST", //用POST方式传输
-						url: '/hzxi/register', //目标地址
+						url: '/hzxi/register/', //目标地址
 						dataType: "JSON", //数据格式:JSON
-						data: {
+						data: JSON.stringify({
 							u_pid:gh,
 							u_name:name,
-							u_pwd:paw
+							u_pwd:paw,
+							// csrftoken:$.cookie('the_cookie')['csrftoken'],
 							
-						}, 
+						}),
 						success: function(data) {
-						    console.log('123456789900')
+
 				           console.log(data);
 				           if(data.status=='OK'){
 				           	localStorage.setItem("u_pid",data.data);
 				           	alert("注册成功");
-				           	$("#zhuce").css('display','none');
-				           	$("#denglu").css('display','block');
+				           	$(".zhuce").css('display','none');
+				           	$(".denglu").css('display','block');
 				           }else{
 				           	alert(data.msg);
 				           }
@@ -104,20 +106,20 @@
 				}
 			})
 			 /*登录*/
-			$("body").on("click","denglu",function(){
+			$("body").on("click","#denglu",function(){
 				var dgh=$("#dgonghao").val();
 				var dpaw=$("#dmima").val();
 				if(dgh!==""&&dpaw!==""){
 					$.ajax({
 					type: "POST", //用POST方式传输
-					url:http+'/index.php/beroung/user/login', //目标地址
-					dataType: "JSON", //数据格式:JSON
-					data: {
+					url:'/hzxi/login/', //目标地址
+					dataType: "json", //数据格式:JSON
+					data: JSON.stringify({
 						u_pid:dgh,
 						u_pwd:dpaw
-					},
+					}),
 					success: function(data) {
-						if(data.status==1){
+						if(data.status=="OK"){
 							alert("登录成功");
 	//						window.location.href="index.html";
 						}else{
