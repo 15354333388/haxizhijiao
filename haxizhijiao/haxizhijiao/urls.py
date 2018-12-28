@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url, include
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^hzxi/', include('hzxi.urls', namespace='hzxi'))
+    url(r'^hzxi/', include('hzxi.urls', namespace='hzxi1')),
 
 ]
