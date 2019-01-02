@@ -25,6 +25,8 @@ class User(models.Model):
     u_home = models.CharField(max_length=255)
     u_jobwill = models.CharField(max_length=4096)
     u_skill = models.CharField(max_length=255)
+    u_forbid = models.BooleanField(default=0)
+    u_permission = models.CharField(max_length=4, default='3')
 
 
 # manoeuvre table 演练表格

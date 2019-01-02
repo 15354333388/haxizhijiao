@@ -1,0 +1,76 @@
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		body{
+			background-color: #f5f5f5;
+		}
+		.zong{
+			width: 12rem;
+			border: 0.01rem solid #ccc;
+			background-color: #f5f5f5;
+			display: flex;
+			margin: 0 auto;
+		}
+		.xiao{
+			padding-right: 0.32rem;
+		}
+		.box{
+			display: none;
+		}
+		.box.on{
+			display: block;
+		}
+		.box p{
+			width: 8rem;
+			height: 0.4rem;
+			/*line-height: 0.4rem;*/
+			border-bottom: 1px solid #000;
+		}
+		.box p input{
+			width: 6.5rem;
+			height: 0.32rem;
+			border: 0px;
+			outline:none;
+			cursor: pointer;
+			background-color: #f5f5f5;
+		}
+		.left{
+			width: 3rem;
+			margin-right: 0.5rem;
+			border-right: 0.01rem solid #ccc;
+			text-align: center;
+		}
+		.left p{
+			cursor: pointer;
+			border-bottom: 0.01rem solid #ccc;
+			height: 1.5rem;
+			line-height: 1.5rem;
+		}
+		.left .cur{
+			color: #6464e5;
+		}
+		.top{
+			width: 12rem;
+			margin: 0 auto;
+		}
+		.top p{
+			height: 0.5rem;
+			line-height: 0.4rem;
+			text-align: right;
+		}
+		.top p a{
+			margin-left: 0.3rem;
+		}
+		.right{
+			display: flex;
+			flex-direction:column;
+		}
+		.right p{
+			width: 8rem;
+			height: 0.35rem;
+		}
+		.box p:last-child{
+			border: 0;
+		}

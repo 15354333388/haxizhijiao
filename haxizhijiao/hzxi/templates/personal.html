@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="/static/css/personal.css"/>
+		<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<title>个人页面</title>
+	</head>
+	
+	<body>
+		<div class="top">
+			<p><span id="name">郑富勇</span><a>注销</a></p>
+		</div>
+		<div class="zong">
+			<div class="left">
+				<p class="cur"><span>个人信息</span></p>
+				<p><span>个人成绩</span></p>
+				<p><span>站内信息</span></p>
+			</div>
+			<div class="right">
+				<div class="box on">
+					<p><span class="xiao">用户名称：</span><input type="text" name="" id="u_id" value="1" /></p>
+					<p><span class="xiao">用户性别：</span><input type="text" name="" id="u_sex" value="" /></p>
+					<p><span class="xiao">用户年龄：</span><input type="text" name="" id="u_Gender" value="" /></p>
+					<p><span class="xiao">用户工号：</span><input type="text" name="" id="u_gonghao" value="" /></p>
+					<p><span class="xiao">用户职位：</span><input type="text" name="" id="u_position" value="" /></p>
+					<p><span class="xiao">用户部门：</span><input type="text" name="" id="u_department" value="" /></p>
+					<p><span>用户培训经历：</span><input type="text" name="" id="u_training" value="" /></p>
+					<p><span>用户岗位经历：</span><input type="text" name="" id="u_post" value="" /></p>
+					<p><span>用户家庭住址：</span><input type="text" name="" id="u_address" value="" /></p>
+					<p><span>用户工作意愿：</span><input type="text" name="" id="u_willingness" value="" /></p>
+					<p><span class="xiao">用户特长：</span><input type="text" name="" id="u_speciality" value="" /></p>
+					
+					<p><input type="button" id="xiugai" class="xiugai" value="修改信息" /></p>
+				</div>
+				<div class="box">
+					<p>个人成绩</p>
+				</div>
+				<div class="box">
+					<p>站内信息</p>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			/*渲览个人信息*/
+				$(function foo(){
+					$.ajax({
+							type: "GET", //用GET方式传输
+							url:'/hzxi/user/information/', //目标地址
+							dataType: "JSON", //数据格式:JSON
+							data: {
+								u_pid: JSON.stringify(localStorage.getItem('u_pid'))
+							},
+							success: function(data) {
+								if(data.status == "OK") {
+									$("#name").html(data.data.u_name);
+									$("#u_id").val(data.data.u_name);
+									$("#u_sex").val(data.data.u_sex);
+									$("#u_Gender").val(data.data.u_age);
+									$("#u_gonghao").val(data.data.u_pid);
+									$("#u_position").val(data.data.u_post);
+									$("#u_department").val(data.data.u_section);
+									$("#u_training").val(data.data.u_trainlist);
+									$("#u_post").val(data.data.u_joblistid);
+									$("#u_address").val(data.data.u_home);
+									$("#u_willingness").val(data.data.u_jobwill);
+									$("#u_speciality").val(data.data.u_skill);
+								} else {
+									alert(data.msg);
+								}
+							}
+						})
+				})
+				
+			/*点击修改信息*/
+			$("#xiugai").click(function(){
+				$.ajax({
+						type: "UPDATE", //用GET方式传输
+						url:'/hzxi/user/information/', //目标地址
+						dataType: "JSON", //数据格式:JSON
+						data: JSON.stringify({
+							u_pid: localStorage.getItem('u_pid'),
+							u_name:$("#u_id").val(),
+							u_sex:$("#u_sex").val(),
+							u_age:$("#u_Gender").val(),
+							u_post:$("#u_position").val(),
+							u_section:$("#u_department").val(),
+							u_trainlist:$("#u_training").val(),
+							u_joblistid:$("#u_post").val(),
+							u_home:$("#u_address").val(),
+							u_jobwill:$("#u_willingness").val(),
+							u_skill:$("#u_speciality").val()
+						}),
+						success: function(data) {
+							if(data.status == "OK") {
+								alert("修改成功")
+								// foo();
+//								window.location.reload();
+							} else {
+								alert(data.msg);
+							}
+						}
+					})
+			})
+			/*tab循环*/
+			$(".left p").click(function() {
+         			$(".left p").eq($(this).index()).addClass("cur").siblings().removeClass('cur');
+         			localStorage.setItem("cat_id",$(this).attr('data'));
+        			$(".box").hide().eq($(this).index()).show();
+        			/*点击分类获取所属产品列表*/
+    		});
+		</script>
+	</body>
+</html>

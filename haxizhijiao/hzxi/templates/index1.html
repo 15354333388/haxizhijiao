@@ -28,6 +28,11 @@
 			text-align: center;
 			display: none;
 		}
+		a{
+			font-size: 0.14rem;
+			color: #6464E5;
+			cursor: pointer;
+		}
 	</style>
 	<body>
 		<div class="box">
@@ -36,15 +41,27 @@
 				<p><span>姓名:</span><input type="text" id="xinming" value="郑富勇" disabled="disabled"/></p>
 				<p><span>密码:</span><input type="password" id="mima" value="" /></p>
 				<p><span>密码:</span><input type="password" id="mima2" value="" /></p>
-				<input type="button" id="zhuce" value="注册" />
+				<input type="button" id="zhuce" value="注册" /></br>
+				<a class="qudenglu">已有账号，去登陆</a>
 			</div>
 			<div class="denglu">
 				<p><span>工号：</span><input type="text" id="dgonghao" value="" /></p>
 				<p><span>密码：</span><input type="text" id="dmima" value="" /></p>
-				<input type="button" id="denglu" value="登陆" />
+				<input type="button" id="denglu" value="登陆" /></br>
+				<a class="quzhuce">还没账号，去注册</a>
 			</div>
 		</div>
 		<script type="text/javascript">
+			/*点击去登陆*/
+			$(".qudenglu").click(function(){
+				$(".zhuce").css('display','none');
+				$(".denglu").css('display','block');
+			})
+			/*点击去注册*/
+			$(".quzhuce").click(function(){
+				$(".denglu").css('display','none');
+				$(".zhuce").css('display','block');
+			})
 			// $.ajaxSetup({
 			// 	data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
 			// });
@@ -100,7 +117,7 @@
 
 				           console.log(data);
 				           if(data.status=='OK'){
-				           	localStorage.setItem("u_pid",data.data);
+				           	localStorage.setItem("u_pid",gh);
 				           	alert("注册成功");
 				           	$(".zhuce").css('display','none');
 				           	$(".denglu").css('display','block');
@@ -131,8 +148,9 @@
 					}),
 					success: function(data) {
 						if(data.status=="OK"){
+						    localStorage.setItem("u_pid",dgh);
 							alert("登录成功");
-	//						window.location.href="index.html";
+							window.location.href="/hzxi/user/homepage/";
 						}else{
 							alert(data.msg);
 						}
