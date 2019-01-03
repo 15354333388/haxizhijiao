@@ -16,7 +16,7 @@
 			<div class="left">
 				<p class="cur"><span>个人信息</span></p>
 				<p><span>个人成绩</span></p>
-				<p><span>站内信息</span></p>
+				<p class="xinxi"><span>站内信息</span><i id="shuzi">3</i></p>
 			</div>
 			<div class="right">
 				<div class="box on">
@@ -38,11 +38,50 @@
 					<p>个人成绩</p>
 				</div>
 				<div class="box">
-					<p>站内信息</p>
+					<p>消息内容1</p>
+					<p>消息内容2</p>
+					<p>消息内容3</p>
+					<p>消息内容4</p>
+					<p>消息内容5</p>
+					<p>消息内容6</p>
 				</div>
 			</div>
 		</div>
+		<div class="fabu">
+			<h5>发布演练</h5>
+			<div class="center">
+				<p><span>演练标题：</span><input type="text" name="biaoti" id="" value="" /></p>
+				<p><span>演练内容：</span><input type="text" name="neirong" id="" value="" /></p>
+				<p><span>演练限时：</span><input type="text" name="xianshi" id="" value="" /></p>
+				<p>提示：演练限时以分钟为单位</p>
+				<input type="button" id="fabu" class="fabu2" value="发布演练" />
+			</div>
+		</div>
 		<script type="text/javascript">
+		/*获取信息*/
+		setInterval(function(){
+//          host = window.location.host
+//          $.post("http://"+host+"/index.php/Article/cpMes/value/1");
+            $.ajax({
+				type: "POST", //用GET方式传输
+				url:'/hzxi/login/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data: JSON.stringify({
+					u_pid:localStorage.getItem('u_pid')
+				}),
+				success: function(data) {
+				if(data.status == "OK") {
+					$("#shuzi").css('display','block');
+					alert("修改成功");
+					$("#shuzi").html();
+				} else {
+					$("#shuzi").css('display','none');
+					alert(data.msg);
+				}
+			}
+		})
+ 
+        },5000);
 			/*渲览个人信息*/
 				$(function foo(){
 					$.ajax({
@@ -110,6 +149,29 @@
         			$(".box").hide().eq($(this).index()).show();
         			/*点击分类获取所属产品列表*/
     		});
+    		/*发布演练*/
+    		$("#fabu").click(function(){
+    			$.ajax({
+						type: "POST", //用GET方式传输
+						url:'/hzxi/login/', //目标地址
+						dataType: "JSON", //数据格式:JSON
+						data: JSON.stringify({
+							y_name:$("#biaoti").val(),
+							y_content:$("#neirong").val(),
+							y_creator:localStorage.getItem('u_pid'),
+							y_endtime:$("xianshi").val()
+						}),
+						success: function(data) {
+							if(data.status == "OK") {
+								alert("发布成功");
+//								foo();
+								window.location.reload();
+							} else {
+								alert(data.msg);
+							}
+						}
+					})
+    		})
 		</script>
 	</body>
 </html>
