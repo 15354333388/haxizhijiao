@@ -163,7 +163,7 @@
 							y_name:$("#biaoti").val(),
 							y_content:$("#neirong").val(),
 							y_creator:localStorage.getItem('u_pid'),
-							y_endtime:$("xianshi").val()
+							pidlist:[u_pid,01]
 						}),
 						success: function(data) {
 							if(data.status == "OK") {
