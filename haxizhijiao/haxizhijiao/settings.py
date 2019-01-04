@@ -125,4 +125,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 APPEND_SLASH = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True # when browser close, session will be deleted.
-SESSION_COOKIE_AGE = 200 # set cookie's live time
+# SESSION_COOKIE_AGE = 200 # set cookie's live time

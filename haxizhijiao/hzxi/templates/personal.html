@@ -59,52 +59,56 @@
 		</div>
 		<script type="text/javascript">
 		/*获取信息*/
-		setInterval(function(){
+		// setInterval(function(){
 //          host = window.location.host
 //          $.post("http://"+host+"/index.php/Article/cpMes/value/1");
-            $.ajax({
-				type: "POST", //用GET方式传输
-				url:'/hzxi/login/', //目标地址
-				dataType: "JSON", //数据格式:JSON
-				data: JSON.stringify({
-					u_pid:localStorage.getItem('u_pid')
-				}),
-				success: function(data) {
-				if(data.status == "OK") {
-					$("#shuzi").css('display','block');
-					alert("修改成功");
-					$("#shuzi").html();
-				} else {
-					$("#shuzi").css('display','none');
-					alert(data.msg);
-				}
-			}
-		})
- 
-        },5000);
+//             $.ajax({
+// 				type: "GET", //用GET方式传输
+// 				url:'/hzxi/user/news/', //目标地址
+// 				dataType: "JSON", //数据格式:JSON
+// 				data: {
+// 					contions: JSON.stringify({'u_pid':localStorage.getItem('u_pid')}),
+// 					u_pid: localStorage.getItem('u_pid')
+// 				},
+// 				success: function(data) {
+// 				if(data.status == "OK") {
+// 					$("#shuzi").css('display','block');
+// 					alert("修改成功");
+// 					$("#shuzi").html();
+// 				} else {
+// 					$("#shuzi").css('display','none');
+// 					alert(data.msg);
+// 				}
+// 			}
+// 		})
+//
+        // });
 			/*渲览个人信息*/
 				$(function foo(){
 					$.ajax({
 							type: "GET", //用GET方式传输
-							url:'/hzxi/user/information/', //目标地址
+							url:'/hzxi/user/manoeuvration/', //目标地址
 							dataType: "JSON", //数据格式:JSON
 							data: {
-								u_pid: JSON.stringify(localStorage.getItem('u_pid'))
+								contions: JSON.stringify({'y_id': 1})
 							},
 							success: function(data) {
 								if(data.status == "OK") {
-									$("#name").html(data.data.u_name);
-									$("#u_id").val(data.data.u_name);
-									$("#u_sex").val(data.data.u_sex);
-									$("#u_Gender").val(data.data.u_age);
-									$("#u_gonghao").val(data.data.u_pid);
-									$("#u_position").val(data.data.u_post);
-									$("#u_department").val(data.data.u_section);
-									$("#u_training").val(data.data.u_trainlist);
-									$("#u_post").val(data.data.u_joblistid);
-									$("#u_address").val(data.data.u_home);
-									$("#u_willingness").val(data.data.u_jobwill);
-									$("#u_speciality").val(data.data.u_skill);
+								    for (var i=0; i<data.data.length;i++){
+								        $("#name").html(data.data[i].u_name);
+								        $("#u_id").val(data.data[i].u_name);
+									$("#u_sex").val(data.data[i].u_sex);
+									$("#u_Gender").val(data.data[i].u_age);
+									$("#u_gonghao").val(data.data[i].u_pid);
+									$("#u_position").val(data.data[i].u_post);
+									$("#u_department").val(data.data[i].u_section);
+									$("#u_training").val(data.data[i].u_trainlist);
+									$("#u_post").val(data.data[i].u_joblistid);
+									$("#u_address").val(data.data[i].u_home);
+									$("#u_willingness").val(data.data[i].u_jobwill);
+									$("#u_speciality").val(data.data[i].u_skill);
+									}
+
 								} else {
 									alert(data.msg);
 								}
@@ -153,7 +157,7 @@
     		$("#fabu").click(function(){
     			$.ajax({
 						type: "POST", //用GET方式传输
-						url:'/hzxi/login/', //目标地址
+						url:'/hzxi/user/manoeuvration/', //目标地址
 						dataType: "JSON", //数据格式:JSON
 						data: JSON.stringify({
 							y_name:$("#biaoti").val(),

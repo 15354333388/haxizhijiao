@@ -62,6 +62,8 @@ class HaxiLogin(object):
                 return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
         if request.method == 'POST':
             body = json.loads(request.body.decode(encoding='utf-8'))
+            # body = request.body
+            print(body,'-----------------------')
             # a = 'ok' if request.is_ajax() else 'no'
             u_pid = body.get('u_pid')
             u_name = body.get('u_name')

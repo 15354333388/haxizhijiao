@@ -1,5 +1,7 @@
 #coding: utf-8
 import json
+import time
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
@@ -9,6 +11,7 @@ from . import permissions
 from . import haxi_login
 from . import haxi_user
 from . import haxi_manoeuvre
+from . import haxi_request
 # Create your views here.
 
 
@@ -30,13 +33,13 @@ def index(request):
 
 
 @api_view(['GET'])
-@permissions.is_login
+# @permissions.is_login
 def user_home_page(request):
     return render(request, 'personal.html')
 
 
 @api_view(['GET'])
-@permissions.is_login
+# @permissions.is_login
 def admin_home_page(request):
     return render(request, '#')
 
@@ -55,79 +58,150 @@ def register(request):
 
 # logout user
 @api_view(['POST'])
-@permissions.is_login
+# @permissions.is_login
 def logout(request):
     return haxi_login.HaxiLogin.logout(request)
 
 
 # finish user's information
 @api_view(['GET', 'POST', 'UPDATE', 'DELETE'])
-@permissions.is_login
+# @permissions.is_login
+@permissions.is_ajax
+# @permissions.is_same
 def user_information(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': []
+    }
+    # if request.is_ajax():
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-u_id'
+        result = haxi_user.HaxiUser.get_users(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'user not found'
+            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+
+    elif request.method == 'POST':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        informations = body.get('userInformations')
+        if informations and type(informations) == list:
+            result = haxi_user.HaxiUser.create_user(informations)
+            if result:
+                data['status'] = 'error'
+                data['msg'] = 'part users have created, but index is %s error' % result
+                return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return JsonResponse(data, status==status.HTTP_201_CREATED)
+        data['status'] = 'error'
+        data['msg'] = 'new user is lack of contions, or bad request'
+        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'UPDATE':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        updateDate = body.get('updateDate', [])
+        if not (type(updateDate) == list and updateDate):
+            data['status'] = 'error'
+            data['msg'] = 'update date type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_user.HaxiUser.update_user(updateDate)
+        if result:
+            data['status'] = 'error'
+            data['msg'] = 'part update have created, but index is %s error' % result
+            return JsonResponse(data, status=status.HTTP_201_CREATED)
+        data['status'] = 'error'
+        data['msg'] = 'informations is error'
+        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        body = request.body.decode(encoding='utf-8')
+        contions = body.get('contions', {})
+        if not (contions and type(contions) == dict):
+            data['status'] = 'error'
+            data['msg'] = 'update date type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_user.HaxiUser.delete_user(contions)
+        if result:
+            data['status'] = 'error'
+            data['msg'] = 'part user have delete, but index is %s error' % result
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+
+
+#Manoeuvre
+@api_view(['GET', 'POST'])
+# @permissions.is_login
+@permissions.is_ajax
+def manoeuvre(request):
     data = {
         'status': 'OK',
         'msg': '',
         'data': ''
     }
-    if request.is_ajax():
-        if request.method == 'GET':
-            body = request.GET
-            if body:
-                u_pid = json.loads(body.get('u_pid'))
-                result = haxi_user.HaxiUser.get_user(u_pid=u_pid)
-                if result:
-                    data['data'] = result[0]
-                    return JsonResponse(data, status=status.HTTP_200_OK)
+    # if request.is_ajax():
+    print(request.method)
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-y_id'
+        result = haxi_manoeuvre.HaxiManoeuvre.get_manoeuvre(**body)
+        if not result:
             data['status'] = 'error'
-            data['msg'] = 'get user informations failed'
+            data['msg'] = 'get manoeuver failed'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        for query in result:
+            query['y_createtime'] = time.mktime(query['y_createtime'].timetuple())
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
 
-
-        elif request.method == 'POST':
-            d = request.data
-            body = json.loads(request.body.decode(encoding='utf-8'))
-            if haxi_user.HaxiUser.create_user(body):
-                return JsonResponse(data, status=status.HTTP_201_CREATED)
+    elif request.method == 'POST':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        contents = body.get('content')
+        if not (contents and type(contents) == list):
             data['status'] = 'error'
-            data['msg'] = 'create user failed'
+            data['msg'] = 'create manoeuver failed, becauser data type is error'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
-
-        elif request.method == 'UPDATE':
-            body = json.loads(request.body.decode(encoding='utf-8'))
-            u_pid = body.get('u_pid')
-            if u_pid == request.session.get('pid'):
-                if haxi_user.HaxiUser.update_user(body, u_pid=u_pid):
-                    return JsonResponse(data, status=status.HTTP_201_CREATED)
-            data['status'] = 'error'
-            data['msg'] = 'update user failed'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
-
-
-        elif request.method == 'DELETE':
-            body = request.body.decode(encoding='utf-8')
-            u_pid = body.get('del_pid')
-            if u_pid == request.session.get('pid'):
-                return haxi_user.HaxiUser.del_user(u_pid)
-            data['status'] = 'error'
-            data['msg'] = 'del user failed'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
-    else:
+        result = haxi_manoeuvre.HaxiManoeuvre.create_manoeuvre(contents)
+        if not result:
+            return JsonResponse(data, status=status.HTTP_201_CREATED)
         data['status'] = 'error'
-        data['msg'] = 'type error'
+        data['msg'] = result
         return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
 
+# user request all news
+@api_view(['GET', 'POST'])
+# @permissions.is_login
+# @permissions.is_ajax
+# @permissions.is_same
+def user_news(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': ''
+    }
+    print('method', request.method)
+    if request.method == 'GET':
+        body = request.GET
+        contions = json.loads(body.get('contions')) if body.get('contions') else {}  # inquire contions
+        # fields = json.loads(body.get('fields')).split(' ') if body.get('fields') else None  # inquire fields
+        limit = int(json.loads(body.get('limit'))) if body.get('limit') else 1  # inquire umber
+        skip = int(json.loads(body.get('skip'))) if body.get('skip') else 0  # inquire start position
+        desc = json.loads(body.get('desc')) if body.get('desc') else '-u_id'  # desc method
+        fields = ['u_id']
+        u_result = haxi_user.HaxiUser.get_users(contions=contions, fields=fields, limit=limit, skip=skip, desc=desc)
 
-#Manoeuvre
-def manoeuvre_information(request):
-    if request.is_ajax():
-        if request.method == 'GET':
-            pass
-        elif request.method == 'POST':
-            d = request.data
-            body = json.loads(request.body.decode(encoding='utf-8'))
-            if  body['u_pid'] == request.session['pid']:
-                return haxi_manoeuvre.HaxiManoeuvre.create_manoeuvre(body)
+        result = haxi_user.HaxiUser.get_news(fields=fields, contions=contions,
+                                              limit=limit, skip=skip, desc=desc)
+        if result:
+            return JsonResponse(data, status=status.HTTP_200_OK)
+        data['status'] = 'error'
+        data['msg'] = '没有新消息'
+        return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+
 
 
 

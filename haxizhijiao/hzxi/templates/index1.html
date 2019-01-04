@@ -141,6 +141,7 @@
 					$.ajax({
 					type: "POST", //用POST方式传输
 					url:'/hzxi/login/', //目标地址
+					headers:{'X-CSRFToken': getCookie('csrftoken')},
 					dataType: "json", //数据格式:JSON
 					data: JSON.stringify({
 						u_pid:dgh,

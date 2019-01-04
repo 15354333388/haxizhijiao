@@ -7,16 +7,17 @@ class DatabaseOperation(object):
     def __init__(self, table):
         self.name = table # appoint table name
 
-    def findOne(self, fields, contions=None, limit=1, skip=0, desc='-u_id'): #
-        query = self.name.objects.filter(**contions)
-        if len(query) == 1:
-            print('------------------', query)
-            return query.values(*fields).order_by(desc)[skip:limit+skip]
-
-    def find(self, fields, contions=None, limit=1, skip=0, desc='-u_id'):
-        query = self.name.objects.filter(**contions)
-        if query:
-            return query.values(*fields).order_by(desc)[skip:limit+skip]
+    def find(self, fields=[], contions={}, limit=None, skip=None, desc=None):
+        print(contions, fields)
+        query = self.name.objects.filter(**contions).values(*fields)
+        if not query:
+            return []
+        if desc:
+            query = query.order_by(desc)
+        if type(limit) == type(skip) == int:
+            query = query[skip: skip+limit]
+        return query
+        # return query.values(*fields).order_by(desc)[start:limit+start] if type(limit) == int else query.values(*fields).order_by(desc)
 
     def create(self, fields):
         try:
@@ -26,10 +27,10 @@ class DatabaseOperation(object):
         except Exception:
             return None
 
-    def update(self, contions=None, fields=None):
+    def update(self, contions=None, contents=None):
         try:
             with transaction.atomic():
-                self.name.objects.filter(**contions).update(**fields)
+                self.name.objects.filter(**contions).update(**contents)
                 return True
         except Exception:
             return None
