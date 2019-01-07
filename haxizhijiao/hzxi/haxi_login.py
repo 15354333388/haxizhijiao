@@ -4,17 +4,15 @@ import json
 from django.http import JsonResponse
 from rest_framework import status
 from . import models
+from . import database
+# from . import database_operation
 
 
 class HaxiLogin(object):
 
     @staticmethod
     def login(request):
-        data = {
-            'status': 'OK',
-            'msg': '',
-            'data': ''
-        }
+        data = database.data
         if request.is_ajax():
             body = json.loads(request.body.decode(encoding='utf-8'))
             u_pid = body.get('u_pid')
@@ -33,11 +31,7 @@ class HaxiLogin(object):
 
     @staticmethod
     def register(request):
-        data = {
-            'status': 'OK',
-            'msg': '',
-            'data': ''
-        }
+        data = database.data
         if request.method == 'GET':
             u_pid = str(request.GET.get('u_pid', ''))
             if u_pid:
@@ -62,9 +56,6 @@ class HaxiLogin(object):
                 return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
         if request.method == 'POST':
             body = json.loads(request.body.decode(encoding='utf-8'))
-            # body = request.body
-            print(body,'-----------------------')
-            # a = 'ok' if request.is_ajax() else 'no'
             u_pid = body.get('u_pid')
             u_name = body.get('u_name')
             u_pwd = body.get('u_pwd')
@@ -93,11 +84,7 @@ class HaxiLogin(object):
 
     @staticmethod
     def logout(request):
-        data = {
-            'status': 'OK',
-            'msg': '',
-            'data': ''
-        }
+        data = database.data
         body = json.loads(request.body.decode(encoding='utf-8'))
         u_pid = body.get('u_pid')
         query = models.User.objects.filter(u_pid=u_pid)

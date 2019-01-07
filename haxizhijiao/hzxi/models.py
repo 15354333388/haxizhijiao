@@ -22,19 +22,19 @@ class User(models.Model):
     u_section = models.CharField(max_length=32)  # 科室
     u_trainlist = models.CharField(max_length=4096)
     u_joblist = models.CharField(max_length=4096)
-    u_home = models.CharField(max_length=255)
+    u_adress = models.CharField(max_length=255)
     u_jobwill = models.CharField(max_length=4096)
     u_skill = models.CharField(max_length=255)
     u_forbid = models.BooleanField(default=0)
     u_permission = models.CharField(max_length=4, default='3')
-    # u_createtime = models.DateTimeField(auto_now_add=True)
-    # u_lastchange = models.DateTimeField(auto_now=True)
+    u_createtime = models.DateTimeField(auto_now_add=True)
+    u_changetime = models.DateTimeField(auto_now=True)
 
 
-finish = (
-    (0, '未完成'),
-    (1, '完成')
-)
+# finish = (
+#     (0, '未完成'),
+#     (1, '完成')
+# )
 # manoeuvre table 演练表格
 class Manoeuvre(models.Model):
     y_id = models.AutoField(primary_key=True)
@@ -42,7 +42,8 @@ class Manoeuvre(models.Model):
     y_content = models.CharField(max_length=255)
     y_creator = models.CharField(max_length=64)
     y_createtime = models.DateTimeField(auto_now_add=True)
-    # y_receive = models.CharField(max_length=255)
+    y_changeetime = models.DateTimeField(auto_now=True)
+    y_receive = models.CharField(max_length=255)
     y_endtime = models.IntegerField() # unit is minute
 
 
@@ -58,15 +59,19 @@ class ManoeuverMiddle(models.Model):
     ym_timeremaining = models.IntegerField()
     ym_result = models.CharField(max_length=256, null=True)
     ym_createtime = models.DateTimeField(auto_now_add=True)
-    ym_finished = models.BooleanField(choices=finish, default=0)
+    ym_changetime = models.DateTimeField(auto_now=True)
+    ym_finished = models.BooleanField(default=False)
+    ym_finishedtime = models.DateTimeField(null=True)
 
 
-#train table 培训
+# train table 培训
 class Train(models.Model):
     t_id = models.AutoField(primary_key=True)
     t_name = models.CharField(max_length=256)
     t_content = models.CharField(max_length=256)
+    t_receive = models.CharField(max_length=255)
     t_createtime = models.DateTimeField(auto_now_add=True)
+    t_changetime = models.DateTimeField(auto_now=True)
     t_endtime = models.IntegerField()
 
 
@@ -79,7 +84,9 @@ class TrainMiddle(models.Model):
     tm_timeremaining = models.IntegerField()
     tm_createtime = models.DateTimeField(auto_now_add=True)
     tm_changetime = models.DateTimeField(auto_now=True)
-    tm_score = models.IntegerField()
+    tm_score = models.IntegerField(null=True)
+    tm_finished = models.BooleanField(default=False)
+    tm_finishedtime = models.DateTimeField(null=True)
 
 
 # examine bank table
@@ -92,6 +99,7 @@ class Bank(models.Model):
     b_choiceD = models.CharField(max_length=256)
     b_true = models.CharField(max_length=4)
     b_createtime = models.DateTimeField(auto_now_add=True)
+    b_changetime = models.DateTimeField(auto_now=True)
 
 
 # examine table 考核
@@ -100,6 +108,8 @@ class Examine(models.Model):
     e_name = models.CharField(max_length=256)
     e_content = models.CharField(max_length=256)
     e_createtime = models.DateTimeField(auto_now_add=True)
+    e_changetime = models.DateTimeField(auto_now=True)
+    e_receive = models.CharField(max_length=255)
     e_endtime = models.IntegerField()
 
 
@@ -111,8 +121,10 @@ class ExamineMiddle(models.Model):
     em_result = models.CharField(max_length=256, null=True)
     em_createtime = models.DateTimeField(auto_now_add=True)
     em_changetime = models.DateTimeField(auto_now=True)
-    tm_timeremaining = models.IntegerField()
+    em_timeremaining = models.IntegerField()
     em_score = models.IntegerField()
+    em_finished = models.BooleanField(default=False)
+    em_finishedtime = models.DateTimeField(null=True)
 
 
 # work table
@@ -121,6 +133,8 @@ class Work(models.Model):
     w_name = models.CharField(max_length=256)
     w_content = models.CharField(max_length=256)
     w_createtime = models.DateTimeField(auto_now_add=True)
+    w_changetiem = models.DateTimeField(auto_now=True)
+    w_receive = models.CharField(max_length=255)
     w_endtime = models.IntegerField()
 
 
@@ -128,9 +142,25 @@ class Work(models.Model):
 class WorkMiddle(models.Model):
     wm_id = models.AutoField(primary_key=True)
     wm_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    wm_examine = models.ForeignKey(to=Work, on_delete=models.CASCADE)
+    wm_work = models.ForeignKey(to=Work, on_delete=models.CASCADE)
     wm_result = models.CharField(max_length=256, null=True)
     wm_createtime = models.DateTimeField(auto_now_add=True)
     wm_changetime = models.DateTimeField(auto_now=True)
     wm_timeremaining = models.IntegerField()
     wm_score = models.IntegerField()
+    em_finished = models.BooleanField(default=False)
+    em_finishedtime = models.DateTimeField(null=True)
+
+
+# finished incident table
+class FinishedIncident(models.Model):
+    fi_id = models.AutoField(primary_key=True)
+    fi_table = models.CharField(max_length=32)
+    fi_symbol = models.IntegerField()
+
+
+# unfinished incident table
+class UnfinshedIncident(models.Model):
+    ui_id = models.AutoField(primary_key=True)
+    ui_table = models.CharField(max_length=32)
+    ui_symbol = models.IntegerField()

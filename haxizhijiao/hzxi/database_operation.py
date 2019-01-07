@@ -8,7 +8,6 @@ class DatabaseOperation(object):
         self.name = table # appoint table name
 
     def find(self, fields=[], contions={}, limit=None, skip=None, desc=None):
-        print(contions, fields)
         query = self.name.objects.filter(**contions).values(*fields)
         if not query:
             return []
@@ -17,7 +16,6 @@ class DatabaseOperation(object):
         if type(limit) == type(skip) == int:
             query = query[skip: skip+limit]
         return query
-        # return query.values(*fields).order_by(desc)[start:limit+start] if type(limit) == int else query.values(*fields).order_by(desc)
 
     def create(self, fields):
         try:

@@ -4,15 +4,16 @@ from . import views
 
 app_name = '[hzxi]'
 urlpatterns = [
-    url(r'^login/$', views.login, name='login'),
-    url(r'^register/$', views.register, name='register'),
-    url(r'^index/$', views.index, name='index'),
-    url(r'^user/homepage/$', views.user_home_page, name='user_home_page'),
-    url(r'^admin/homepage/$', views.admin_home_page, name='admin_home_page'),
-    url(r'^user/information/$', views.user_information, name='user_information'),
-    url(r'^user/manoeuvration/$', views.manoeuvre, name='manoeuvre_information'),
-    url(r'^train/$', views.train, name='train'),
-    url(r'examine/$', views.examine, name='examine'),
-    url(r'work/$', views.work, name='work'),
+    url(r'^login/$', views.login, name='login'),  # user login account
+    url(r'^register/$', views.register, name='register'),  # user register acaount
+    url(r'^logout/$', views.logout, name='logout'),  # user logout own account
+    url(r'^index/$', views.index, name='index'),  # enter web home page
+    # url(r'^user/homepage/$', views.user_home_page, name='user_home_page'),
+    # url(r'^admin/homepage/$', views.admin_home_page, name='admin_home_page'),
+    url(r'^user/management/$', views.user_management, name='user_management'),
+    url(r'^user/manoeuvre/$', views.user_manoeuvre, name='user_manoeuvre'),
+    url(r'^user/train/$', views.user_train, name='user_train'),
+    url(r'user/examine/$', views.user_examine, name='user_examine'),
+    url(r'user/work/$', views.user_work, name='user_work'),
     url(r'^$', views.index),
     ]
