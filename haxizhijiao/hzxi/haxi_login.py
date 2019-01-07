@@ -28,8 +28,8 @@ class HaxiLogin(object):
                 return response
             except models.User.DoesNotExist or models.User.MultipleObjectsReturned:
                 data['status'] = 'error'
-                data['data'] = 'login failed'
-                return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+                data['data'] = 'login failed,账号或密码错误'
+                return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def register(request):

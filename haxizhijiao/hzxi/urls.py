@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^admin/homepage/$', views.admin_home_page, name='admin_home_page'),
     url(r'^user/information/$', views.user_information, name='user_information'),
     url(r'^user/manoeuvration/$', views.manoeuvre, name='manoeuvre_information'),
-    url(r'^user/news/$', views.user_news, name='user_news'),
-    url(r'exam/', views.exam, name='exam'),
+    url(r'^train/$', views.train, name='train'),
+    url(r'examine/$', views.examine, name='examine'),
+    url(r'work/$', views.work, name='work'),
     url(r'^$', views.index),
     ]

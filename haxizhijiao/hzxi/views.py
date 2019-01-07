@@ -12,6 +12,10 @@ from . import haxi_login
 from . import haxi_user
 from . import haxi_manoeuvre
 from . import haxi_request
+from . import haxi_train
+from . import haxi_basis
+from . import haxi_maneouvre_middle
+from . import haxi_train_middle
 # Create your views here.
 
 
@@ -86,7 +90,6 @@ def user_information(request):
         data['data'] = [query for query in result]
         return JsonResponse(data, status=status.HTTP_200_OK)
 
-
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
         informations = body.get('userInformations')
@@ -133,7 +136,7 @@ def user_information(request):
 
 
 #Manoeuvre
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'UPDATE'])
 # @permissions.is_login
 @permissions.is_ajax
 def manoeuvre(request):
@@ -159,10 +162,10 @@ def manoeuvre(request):
 
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
-        contents = body.get('content')
+        contents = body.get('contents')
         if not (contents and type(contents) == list):
             data['status'] = 'error'
-            data['msg'] = 'create manoeuver failed, becauser data type is error'
+            data['msg'] = 'create manoeuver failed, because data type is error'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
         result = haxi_manoeuvre.HaxiManoeuvre.create_manoeuvre(contents)
         if not result:
@@ -171,47 +174,196 @@ def manoeuvre(request):
         data['msg'] = result
         return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'UPDATE': # user send manoeuvre answer.
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        contents = body.get('contents')
+        if not (contents and type(contents) == dict):
+            data['status'] = 'error'
+            data['msg'] = 'create manoeuver failed, because data type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_manoeuvre.HaxiManoeuvre.update_manoeuvre(contents)
+        if result:
+            data['status'] = 'error'
+            data['msg'] = result
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data, status=status.HTTP_200_OK)
 
-# user request all news
-@api_view(['GET', 'POST'])
-# @permissions.is_login
-# @permissions.is_ajax
-# @permissions.is_same
-def user_news(request):
+
+# manoeuvremiddle view
+@api_view(['GET'])
+def manoeuver_middle(request):
     data = {
         'status': 'OK',
         'msg': '',
         'data': ''
     }
-    print('method', request.method)
     if request.method == 'GET':
-        body = request.GET
-        contions = json.loads(body.get('contions')) if body.get('contions') else {}  # inquire contions
-        # fields = json.loads(body.get('fields')).split(' ') if body.get('fields') else None  # inquire fields
-        limit = int(json.loads(body.get('limit'))) if body.get('limit') else 1  # inquire umber
-        skip = int(json.loads(body.get('skip'))) if body.get('skip') else 0  # inquire start position
-        desc = json.loads(body.get('desc')) if body.get('desc') else '-u_id'  # desc method
-        fields = ['u_id']
-        u_result = haxi_user.HaxiUser.get_users(contions=contions, fields=fields, limit=limit, skip=skip, desc=desc)
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-ym_id'
+        result = haxi_maneouvre_middle.ManeouvreMiddle.get_maneouvre_middle(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'user not found'
+            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
 
-        result = haxi_user.HaxiUser.get_news(fields=fields, contions=contions,
-                                              limit=limit, skip=skip, desc=desc)
-        if result:
-            return JsonResponse(data, status=status.HTTP_200_OK)
+
+# # user request all news
+# @api_view(['GET', 'POST'])
+# # @permissions.is_login
+# # @permissions.is_ajax
+# # @permissions.is_same
+# def user_news(request):
+#     data = {
+#         'status': 'OK',
+#         'msg': '',
+#         'data': ''
+#     }
+#     print('method', request.method)
+#     if request.method == 'GET':
+#         body = request.GET
+#         contions = json.loads(body.get('contions')) if body.get('contions') else {}  # inquire contions
+#         # fields = json.loads(body.get('fields')).split(' ') if body.get('fields') else None  # inquire fields
+#         limit = int(json.loads(body.get('limit'))) if body.get('limit') else 1  # inquire umber
+#         skip = int(json.loads(body.get('skip'))) if body.get('skip') else 0  # inquire start position
+#         desc = json.loads(body.get('desc')) if body.get('desc') else '-u_id'  # desc method
+#         fields = ['u_id']
+#         u_result = haxi_user.HaxiUser.get_users(contions=contions, fields=fields, limit=limit, skip=skip, desc=desc)
+#
+#         result = haxi_user.HaxiUser.get_news(fields=fields, contions=contions,
+#                                               limit=limit, skip=skip, desc=desc)
+#         if result:
+#             return JsonResponse(data, status=status.HTTP_200_OK)
+#         data['status'] = 'error'
+#         data['msg'] = '没有新消息'
+#         return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'POST'])
+def train(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': ''
+    }
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-t_id'
+        result = haxi_train.HaxiTrain.get_Train(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'get train failed'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        for query in result:
+            query['t_createtime'] = time.mktime(query['t_createtime'].timetuple())
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        contents = body.get('contents')
+        if not (contents and type(contents) == list):
+            data['status'] = 'error'
+            data['msg'] = 'create train failed, because data type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_train.HaxiTrain.create_train(contents)
+        if not result:
+            return JsonResponse(data, status=status.HTTP_201_CREATED)
         data['status'] = 'error'
-        data['msg'] = '没有新消息'
-        return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        data['msg'] = result
+        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
 
+# trainmiddle view
+@api_view(['GET'])
+def train_middle(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': ''
+    }
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-ym_id'
+        result = haxi_train_middle.TrainMiddle.get_train_middle(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'user not found'
+            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
 
 
 #exam funcation
 @api_view(['GET', 'POST', 'UPDATE'])
-def exam(request):
+def examine(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': ''
+    }
     if request.method == 'GET':
-        models.User.objects.create(u_name='123')
-        return HttpResponse('exam')
-    if request.method == 'POST':
-        pass
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-t_id'
+        result = haxi_basis.HaxiBasic.get_examine(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'get examine failed'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        for query in result:
+            query['e_createtime'] = time.mktime(query['e_createtime'].timetuple())
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        contents = body.get('contents')
+        if not (contents and type(contents) == list):
+            data['status'] = 'error'
+            data['msg'] = 'create train failed, because data type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_basis.HaxiBasic.create_examine(contents)
+        if not result:
+            return JsonResponse(data, status=status.HTTP_201_CREATED)
+        data['status'] = 'error'
+        data['msg'] = result
+        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+
+
+# work view
+@api_view(['GET', 'POST', 'UPDATE'])
+def work(request):
+    data = {
+        'status': 'OK',
+        'msg': '',
+        'data': ''
+    }
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else '-t_id'
+        result = haxi_basis.HaxiBasic.get_examine(**body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'get examine failed'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        for query in result:
+            query['e_createtime'] = time.mktime(query['e_createtime'].timetuple())
+        data['data'] = [query for query in result]
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        body = json.loads(request.body.decode(encoding='utf-8'))
+        contents = body.get('contents')
+        if not (contents and type(contents) == list):
+            data['status'] = 'error'
+            data['msg'] = 'create train failed, because data type is error'
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        result = haxi_basis.HaxiBasic.create_examine(contents)
+        if not result:
+            return JsonResponse(data, status=status.HTTP_201_CREATED)
+        data['status'] = 'error'
+        data['msg'] = result
+        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
 

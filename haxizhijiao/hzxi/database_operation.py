@@ -25,7 +25,7 @@ class DatabaseOperation(object):
                 self.name.objects.create(**fields)
                 return True
         except Exception:
-            return None
+                print('---none')
 
     def update(self, contions=None, contents=None):
         try:
