@@ -26,28 +26,26 @@ class Train(object):
     @staticmethod
     def create_train(contents):
         i = 0
-        for content in contents:
-            if not (content and type(content) == dict):
-                return 'index %s format or content error'
-            content['data']['t_endtime'] = int(content['data']['t_endtime'])
-            try:
-                with transaction.atomic():
-                    if not database_operation.DatabaseOperation(models.Train).create(content['data']):
-                        return 'create Train table failed, index %s' % i
-                    t_id = models.Train.objects.get(**content['data']).t_id #get Train t_id
-                    u_pidlist = content.get('pidlist')
-                    for u_pid in u_pidlist:
-                        query = models.User.objects.get(u_pid=u_pid)
-                        u_id = query.u_id
-                        fields = {'tm_train': models.Train.objects.get(t_id=t_id),
-                                  'tm_user': models.User.objects.get(u_id=u_id),
-                                  'tm_timeremaining': content['data']['t_endtime']}
-                        if not database_operation.DatabaseOperation(models.TrainMiddle).create(fields):
-                            assert 'create TrainMiddle table failed, index %s' % i
-            except Exception as err:
-                if database_operation.DatabaseOperation(models.Train).delete({'t_id': t_id}):
-                    return err
-                assert 'delete t_id= %s Train failed' % t_id
+        with transaction.atomic():
+            for content in contents:
+                if not (content and type(content) == dict):
+                    return 'index %s format or content error'
+                content['data']['t_endtime'] = int(content['data']['t_endtime'])
+                models.Train.objects.create(**content['data'])
+                t_id = models.Train.objects.get(**content['data']).t_id #get Examine t_id
+                u_pidlist = content.get('pidlist')
+                for u_pid in u_pidlist:
+                    query = models.User.objects.get(u_pid=u_pid)
+                    u_id = query.u_id
+                    fields = {'tm_examine': models.Train.objects.get(t_id=t_id),
+                                'tm_user': models.User.objects.get(u_id=u_id),
+                                'tm_timeremaining': content['data']['t_endtime']}
+                    models.TrainMiddle.objects.create(**fields)
+            u_fields = {
+                'ui_table': 'train',
+                'ui_symbol':t_id
+            }
+            models.Incident.objects.create(**u_fields)
             i += 1
         return None
 

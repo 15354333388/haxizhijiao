@@ -17,6 +17,7 @@ user_fields = [
     'u_pwd',
     'u_pid',
     'u_section',
+    'u_group',
     'u_trainlist',
     'u_joblist',
     'u_adress',
@@ -37,6 +38,7 @@ manoeuvre_fields = [
     'y_createtime',
     'y_changetime',
     'y_receive',
+    'y_finished',
     'y_endtime',
 ]
 
@@ -146,15 +148,18 @@ bank_fields = [
 ]
 
 # finished incident table
-finished_incident_fields = [
-    'fi_id',
-    'fi_table',
-    'fi_symbol',
+incident_fields = [
+    'i_id',
+    'i_table',
+    'i_symbol',
+    'i_createtime',
+    'i_endtime',
+    'i_finished',
 ]
 
-# unfinished incident table
-unfinished_incident_fields = [
-    'ui_id',
-    'ui_table',
-    'ui_symbol',
-]
+# # unfinished incident table
+# unfinished_incident_fields = [
+#     'ui_id',
+#     'ui_table',
+#     'ui_symbol',
+# ]

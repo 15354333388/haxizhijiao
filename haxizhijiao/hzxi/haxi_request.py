@@ -15,8 +15,7 @@ fieldsList = {
     models.TrainMiddle: database.train_middle_fields,
     models.Work: database.work_fields,
     models.WorkMiddle: database.work_middle_fields,
-    models.FinishedIncident: database.finished_incident_fields,
-    models.UnfinshedIncident: database.unfinished_incident_fields,
+    models.Incident: database.incident_fields,
 }
 
 class HaxiRequest(object):

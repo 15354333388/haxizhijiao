@@ -1,11 +1,15 @@
-#coding: utf-8
+# -*- coding: utf-8 -*-
+import sys
+# from imp import reload
+# reload(sys)
+
 import json
-import time
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from . import haxi_incident
 from . import permissions
 from . import haxi_login
 from . import haxi_manoeuvre
@@ -35,7 +39,9 @@ def index(request):
     #             return redirect('/hzxi/admin/homepage/')
     #     except models.User.DoesNotExist or models.User.MultipleObjectsReturned:
     #         pass
-    return render(request, 'index1.html')
+    from . import models
+    models.Manoeuvre.objects.create()
+    return render(request, 'index.html')
 
 
 @api_view(['GET'])
@@ -136,42 +142,68 @@ def user_management(request):
 
 # user_Manoeuvre view
 # @permissions.is_login
-@api_view(['GET', 'POST', 'UPDATE'])
-@permissions.is_ajax
+@api_view(['GET', 'POST', 'UPDATE', 'OPTIONS'])
+# @permissions.is_ajax
 def user_manoeuvre(request):
     data = database.data.copy()
     if request.method == 'GET':
         body = haxi_request.HaxiRequest.get_request_contions(request)
         body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else 'y_id'
+        if body['contions'].get('y_finished'):
+            body['contions']['y_finished'] = int(body['contions']['y_finished'])
         body['fields'] = body['fields'] if body['fields'] else database.manoeuvre_fields
+        print('--------------------------------------------------', body, '---------------------------------')
         result = haxi_manoeuvre.Manoeuvre.get_manoevure(body)
+        # manoeuvre_fields = [
+        #     'y_name',
+        #     'y_content',
+        #     'y_creator',
+        #     'y_receive',
+        # ]
+        # from . import models
+        # for i in range(50):
+        #     d = {}
+        #     for k in manoeuvre_fields:
+        #         d[k] = 'manoeuvre' + str(i)
+        #     d['y_endtime'] = 120
+        #     models.Manoeuvre.objects.create(**d)
         if not result:
+            data['data'] = []
             data['status'] = 'error'
-            data['msg'] = 'get manoeuver failed'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            data['msg'] = 'nou found manoeuvre'
+            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
         data['data'] = result
-        return JsonResponse(data, status=status.HTTP_200_OK)
+        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res['Access-Control-Allow-Origin'] = "*"
+        return res
+        # return JsonResponse(status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
         contents = body.get('contents')
         if not (contents and type(contents) == list):
             data['status'] = 'error'
-            data['msg'] = 'create manoeuver failed, because data type is error'
+            data['msg'] = 'create manoeuvre failed, because data type is error'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
         result = haxi_manoeuvre.Manoeuvre.create_manoeuvre(contents)
-        if not result:
-            return JsonResponse(data, status=status.HTTP_201_CREATED)
-        data['status'] = 'error'
-        data['msg'] = result
-        return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        if result:
+            data['status'] = 'error'
+            data['msg'] = 'indesx %s is error' % result
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
+        #  send message
+
+        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res['Access-Control-Allow-Origin'] = "*"
+        return res
 
     elif request.method == 'UPDATE': # user send manoeuvre answer.
         body = json.loads(request.body.decode(encoding='utf-8'))
         contents = body.get('contents')
         if not (contents and type(contents) == dict):
             data['status'] = 'error'
-            data['msg'] = 'create manoeuver failed, because data type is error'
+            data['msg'] = 'create manoeuvre failed, because data type is error'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
         result = haxi_manoeuvre.Manoeuvre.update_manoeuvre(contents)
         if not result:
@@ -182,7 +214,7 @@ def user_manoeuvre(request):
 
 
 # manoeuvre_middle view
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def manoeuvre_middle(request):
     data = {
         'status': 'OK',
@@ -199,6 +231,28 @@ def manoeuvre_middle(request):
             return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
         data['data'] = [query for query in result]
         return JsonResponse(data, status=status.HTTP_200_OK)
+
+    if request.method == 'POST':
+        # body = json.loads(request.body.decode(encoding='utf-8'))
+        body = request.POST
+        # body = json.loads(request.body.decode('utf8', 'ignore'))
+        # print(body)
+        # for i in body:
+        #     print('---------------------', i)
+        print(request.FILES)
+        d = {}
+        d['u_id'],d['y_id'] = int(body.get('u_id')), int(body.get('y_id'))
+        text = str(body.get('words'))
+        result = haxi_maneouvre_middle.ManeouvreMiddle.create_middle_manoeuvre(d, request.FILES, text=text)
+        if result:
+            data['status'] = 'error'
+            data['msg'] = 'create is error about part'
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
+        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res['Access-Control-Allow-Origin'] = "*"
+        return res
 
 
 # user_train
@@ -349,5 +403,43 @@ def user_work(request):
         data['status'] = 'error'
         data['msg'] = result
         return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+
+def incident(request):
+    data = database.data.copy()
+    if request.method == 'GET':
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else 'i_id'
+        body['fields'] = body['fields'] if body['fields'] else database.incident_fields
+        result = haxi_incident.Incident.get_incident(body)
+        if not result:
+            data['status'] = 'error'
+            data['msg'] = 'not found incident'
+            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        data['data'] = result
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+
+# @api_view(['GET', 'POST'])
+def test(request):
+    if request.method == 'GET':
+        if not request.GET.get('a', 0):
+            return render(request, 'chuan.html')
+        return JsonResponse({'a': 123})
+    if request.method == 'POST':
+        body = request.POST
+        return JsonResponse({'sataus': 'OK'})
+
+
+def ceshi(request):
+    from . import qiniyuntest
+    if request.method == 'GET':
+        return  qiniyuntest.ceshi(request)
+    elif request.method == 'POST':
+        return qiniyuntest.upload(request)
+
+
+def upload(request):
+    pass
+
 
 

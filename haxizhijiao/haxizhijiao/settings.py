@@ -25,7 +25,7 @@ SECRET_KEY = 'pvy@cc^t#6g6$1s3(ap66tz4@o8dua+h=$o1c3^8j#$&-8wn61'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.103']
 
 
 # Application definition
@@ -126,3 +126,9 @@ STATIC_URL = '/static/'
 APPEND_SLASH = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True # when browser close, session will be deleted.
 # SESSION_COOKIE_AGE = 200 # set cookie's live time
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'hzxi', 'static', 'uploads')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

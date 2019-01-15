@@ -13,8 +13,12 @@ class DatabaseOperation(object):
             return []
         if desc:
             query = query.order_by(desc)
-        if type(limit) == type(skip) == int:
-            query = query[skip: skip+limit]
+        if type(limit) == int and not skip:
+            query = query[0: limit]
+        elif type(skip) == int and not limit:
+            query = query[skip: len(query)]
+        elif type(limit) == type(skip) == int:
+            query = query[skip: skip + limit]
         return query
 
     def create(self, fields):

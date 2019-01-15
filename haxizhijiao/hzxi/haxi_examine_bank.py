@@ -30,34 +30,26 @@ class Examine(object):
     @staticmethod
     def create_examine(contents):
         i = 0
-        for content in contents:
-            if not (content and type(content) == dict):
-                return 'index %s format or content error'
-            content['data']['e_endtime'] = int(content['data']['e_endtime'])
-            try:
-                with transaction.atomic():
-                    if not database_operation.DatabaseOperation(models.Manoeuvre).create(content['data']):
-                        return 'create Examine table failed, index %s' % i
-                    e_id = models.Examine.objects.get(**content['data']).e_id #get Examine e_id
-                    u_pidlist = content.get('pidlist')
-                    for u_pid in u_pidlist:
-                        query = models.User.objects.get(u_pid=u_pid)
-                        u_id = query.u_id
-                        fields = {'em_examine': models.Examine.objects.get(e_id=e_id),
-                                  'em_user': models.User.objects.get(u_id=u_id),
-                                  'em_timeremaining': content['data']['e_endtime']}
-                        if not models.ExamineMiddle.objects.create(**fields):
-                            assert 'create ExamineMiddle table failed, index %s' % i
-            except Exception as err:
-                if database_operation.DatabaseOperation(models.Examine).delete({'y_id': e_id}):
-                    return err
-                assert 'delete e_id= %s Manoeuvre failed, please delete with hand ' % e_id
+        with transaction.atomic():
+            for content in contents:
+                if not (content and type(content) == dict):
+                    return 'index %s format or content error'
+                content['data']['e_endtime'] = int(content['data']['e_endtime'])
+                models.Examine.objects.create(**content['data'])
+                e_id = models.Examine.objects.get(**content['data']).e_id #get Examine e_id
+                u_pidlist = content.get('pidlist')
+                for u_pid in u_pidlist:
+                    query = models.User.objects.get(u_pid=u_pid)
+                    u_id = query.u_id
+                    fields = {'em_examine': models.Examine.objects.get(e_id=e_id),
+                                'em_user': models.User.objects.get(u_id=u_id),
+                                'em_timeremaining': content['data']['e_endtime']}
+                    models.ExamineMiddle.objects.create(**fields)
             u_fields = {
                 'ui_table': 'examine',
                 'ui_symbol':e_id
             }
-            if not database_operation.DatabaseOperation(models.UnfinshedIncident).create(u_fields):
-                assert 'create unfinished failed index %s' % i
+            models.Incident.objects.create(**u_fields)
             i += 1
         return None
 

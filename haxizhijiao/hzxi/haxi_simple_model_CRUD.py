@@ -6,6 +6,7 @@ class HaxiSimpleCrud(object):
 
     @staticmethod
     def get(table, limit=None, skip=None, desc=None, fields=[], contions={}):
+        print('+++++++++++++++++++++++', table, limit, skip, desc, fields, contions)
         return database_operation.DatabaseOperation(table).find(fields=fields, contions=contions, limit=limit, skip=skip, desc=desc)
 
     @staticmethod
