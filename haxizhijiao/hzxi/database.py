@@ -157,6 +157,23 @@ incident_fields = [
     'i_finished',
 ]
 
+message_fields = [
+    'm_id',
+    'm_send',
+    'm_receive',
+    'm_content',
+    'm_createtime',
+    'm_is_send',
+]
+
+chat_fields = [
+    'c_id',
+    'c_send',
+    'c_receive',
+    'c_content',
+    'c_createtime',
+    'c_is_send',
+]
 # # unfinished incident table
 # unfinished_incident_fields = [
 #     'ui_id',

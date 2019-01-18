@@ -30,11 +30,13 @@ class Manoeuvre(object):
     @staticmethod
     def create_manoeuvre(contents):
         i = 0
+        data = list()
         with transaction.atomic():
             for content in contents:
                 if not (content and type(content) == dict):
                     return 'index %s format or content error' % i
                 content['data']['y_endtime'] = int(content['data']['y_endtime'])
+                content['data']['y_receive'] = ' '.join(content['data']['y_receive'])
                 models.Manoeuvre.objects.create(**content['data'])
                 y_id = models.Manoeuvre.objects.get(**content['data']).y_id #get Examine e_id
                 id_list = content.get('id_list')
@@ -49,38 +51,19 @@ class Manoeuvre(object):
             }
             models.Incident.objects.create(**u_fields)
             i += 1
-        return None
-        # i = 0
-        # for content in contents:
-        #     if not (content and type(content) == dict):
-        #         return 'index %s format or content error'
-        #     content['data']['y_endtime'] = int(content['data']['y_endtime'])
-        #     try:
-        #         with transaction.atomic():
-        #             if not database_operation.DatabaseOperation(models.Manoeuvre).create(content['data']):
-        #                 return 'create Manoeuver table failed, index %s' % i
-        #             y_id = models.Manoeuvre.objects.get(**content['data']).y_id #get manoeuvre y_id
-        #             u_pidlist = content.get('pidlist')
-        #             for u_pid in u_pidlist:
-        #                 query = models.User.objects.get(u_pid=u_pid)
-        #                 u_id = query.u_id
-        #                 fields = {'ym_manoeuvre': models.Manoeuvre.objects.get(y_id=y_id),
-        #                           'ym_user': models.User.objects.get(u_id=u_id),
-        #                           'ym_timeremaining': content['data']['y_endtime']}
-        #                 if not models.ManoeuverMiddle.objects.create(**fields):
-        #                     assert 'create ManoeuverMiddle table failed, index %s' % i
-        #     except Exception as err:
-        #         if database_operation.DatabaseOperation(models.Manoeuvre).delete({'y_id': y_id}):
-        #             return err
-        #         assert 'delete y_id= %s Manoeuvre failed, please delete with hand ' % y_id
-        #     u_fields = {
-        #         'ui_table': 'manoeuvre',
-        #         'ui_symbol': y_id
-        #     }
-        #     if not database_operation.DatabaseOperation(models.Incident).create(u_fields):
-        #         assert 'create unfinished failed index %s' % i
-        #     i += 1
-        # return None
+            print(content)
+            from . import database
+            queryset = models.Manoeuvre.objects.filter(**content['data']).values(*database.manoeuvre_fields)[0]
+            print(queryset)
+            if queryset:
+                # import json
+                # queryset['y_receive'] = (queryset['y_receive'])[1:-1]
+                # import pickle
+
+
+                # print(pickle.loads(bytes(queryset['y_receive'])))
+                data.append(queryset)
+        return data
 
     @staticmethod
     def update_manoeuvre(contents):

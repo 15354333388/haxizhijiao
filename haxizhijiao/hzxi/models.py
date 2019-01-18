@@ -166,5 +166,40 @@ class Incident(models.Model):
     # fi_createtime = models.DateTimeField(auto_now_add=True)
 #
 #
-class Userp(models.Model):
-    avatar = models.CharField(max_length=256)
+# class Userp(models.Model):
+#     avatar = models.CharField(max_length=256)
+
+
+class Message(models.Model):
+    m_id = models.AutoField(primary_key=True)
+    m_send = models.IntegerField()
+    m_receive = models.IntegerField()
+    m_content = models.CharField(max_length=2048)
+    m_createtime = models.DateTimeField(auto_now_add=True)
+    m_is_send = models.BooleanField(default=False)
+
+
+class Chat(models.Model):
+    c_id = models.AutoField(primary_key=True)
+    c_send = models.IntegerField()
+    c_receive = models.IntegerField()
+    c_content = models.CharField(max_length=2048)
+    c_createtime = models.DateTimeField(auto_now_add=True)
+    c_is_send = models.BooleanField(default=False)
+
+
+# class OldMessage(models.Model):
+#     om_id = models.AutoField(primary_key=True)
+#     om_send = models.IntegerField()
+#     om_receive = models.IntegerField()
+#     om_content = models.CharField(max_length=2048)
+#     # om_old = models.CharField(max_length=2048)
+#     om_createtime = models.DateTimeField(auto_now_add=True)
+
+
+class LoginUser(models.Model):
+    l_id = models.AutoField(primary_key=True)
+    l_u_id = models.IntegerField()
+    l_createtime = models.DateTimeField(auto_now_add=True)
+    l_changetime = models.DateTimeField(null=True)
+    l_islogin = models.BooleanField(default=True)

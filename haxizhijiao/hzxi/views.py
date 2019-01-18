@@ -1,33 +1,33 @@
 # -*- coding: utf-8 -*-
-import sys
-# from imp import reload
-# reload(sys)
-
+# import queue
 import json
-
-from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.shortcuts import render
+from dwebsocket.decorators import accept_websocket,require_websocket
 from . import haxi_incident
 from . import permissions
 from . import haxi_login
 from . import haxi_manoeuvre
 from . import haxi_request
 from . import haxi_train
-# from . import haxi_basis
 from . import haxi_maneouvre_middle
 from . import haxi_train_middle
 from . import database
 from . import haxi_user
 from . import haxi_work
 from . import haxi_examine_bank
+from . import models
 # Create your views here.
 
+clients = dict()
 
 # index，if not login, must login in index, only and receive method of 'get'
 # checked session, if user has login, it will redirect own page
 # @permissions.is_login
+
+
 @api_view(['GET'])
 def index(request):
     # if request.COOKIES.get('is_login', False):
@@ -44,7 +44,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-@api_view(['GET'])
+
 # @permissions.is_login
 # def user_home_page(request):
 #     return render(request, 'personal.html')
@@ -56,7 +56,9 @@ def index(request):
 #     return render(request, '#')
 # finish user login, only receive method of 'post'
 # @permissions.verify_permission # check permissions
-@api_view(['POST'])
+
+
+@api_view(['GET', 'POST'])
 def login(request):
     return haxi_login.HaxiLogin.login(request)
 
@@ -71,6 +73,8 @@ def register(request):
 # @permissions.is_login
 @api_view(['POST'])
 def logout(request):
+    body = json.loads(request.body.decode(encoding='utf-8'))
+    del clients[int(body.get('u_id'))]
     return haxi_login.HaxiLogin.logout(request)
 
 
@@ -152,31 +156,17 @@ def user_manoeuvre(request):
         if body['contions'].get('y_finished'):
             body['contions']['y_finished'] = int(body['contions']['y_finished'])
         body['fields'] = body['fields'] if body['fields'] else database.manoeuvre_fields
-        print('--------------------------------------------------', body, '---------------------------------')
         result = haxi_manoeuvre.Manoeuvre.get_manoevure(body)
-        # manoeuvre_fields = [
-        #     'y_name',
-        #     'y_content',
-        #     'y_creator',
-        #     'y_receive',
-        # ]
-        # from . import models
-        # for i in range(50):
-        #     d = {}
-        #     for k in manoeuvre_fields:
-        #         d[k] = 'manoeuvre' + str(i)
-        #     d['y_endtime'] = 120
-        #     models.Manoeuvre.objects.create(**d)
         if not result:
             data['data'] = []
             data['status'] = 'error'
             data['msg'] = 'nou found manoeuvre'
-            return JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
-        data['data'] = result
-        res = JsonResponse(data, status=status.HTTP_200_OK)
+            res = JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+        else:
+            data['data'] = result
+            res = JsonResponse(data, status=status.HTTP_200_OK)
         res['Access-Control-Allow-Origin'] = "*"
         return res
-        # return JsonResponse(status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -184,22 +174,26 @@ def user_manoeuvre(request):
         if not (contents and type(contents) == list):
             data['status'] = 'error'
             data['msg'] = 'create manoeuvre failed, because data type is error'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
         result = haxi_manoeuvre.Manoeuvre.create_manoeuvre(contents)
-        if result:
+        if not isinstance(result, list):
             data['status'] = 'error'
             data['msg'] = 'indesx %s is error' % result
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res
         #  send message
-
+        data['data'] = result
         res = JsonResponse(data, status=status.HTTP_200_OK)
         res['Access-Control-Allow-Origin'] = "*"
         return res
 
     elif request.method == 'UPDATE': # user send manoeuvre answer.
         body = json.loads(request.body.decode(encoding='utf-8'))
+
+
         contents = body.get('contents')
         if not (contents and type(contents) == dict):
             data['status'] = 'error'
@@ -233,20 +227,14 @@ def manoeuvre_middle(request):
         return JsonResponse(data, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-        # body = json.loads(request.body.decode(encoding='utf-8'))
         body = request.POST
-        # body = json.loads(request.body.decode('utf8', 'ignore'))
-        # print(body)
-        # for i in body:
-        #     print('---------------------', i)
-        print(request.FILES)
-        d = {}
-        d['u_id'],d['y_id'] = int(body.get('u_id')), int(body.get('y_id'))
+        d = dict()
+        d['u_id'], d['y_id'] = int(body.get('u_id')), int(body.get('y_id'))
         text = str(body.get('words'))
         result = haxi_maneouvre_middle.ManeouvreMiddle.create_middle_manoeuvre(d, request.FILES, text=text)
         if result:
             data['status'] = 'error'
-            data['msg'] = 'create is error about part'
+            data['msg'] = result
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res
@@ -404,6 +392,7 @@ def user_work(request):
         data['msg'] = result
         return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
+
 def incident(request):
     data = database.data.copy()
     if request.method == 'GET':
@@ -419,27 +408,89 @@ def incident(request):
         return JsonResponse(data, status=status.HTTP_200_OK)
 
 
-# @api_view(['GET', 'POST'])
-def test(request):
-    if request.method == 'GET':
-        if not request.GET.get('a', 0):
-            return render(request, 'chuan.html')
-        return JsonResponse({'a': 123})
-    if request.method == 'POST':
-        body = request.POST
-        return JsonResponse({'sataus': 'OK'})
+@accept_websocket
+def echo(request):
+    def get_message(user_id, message_type=None):
+        query_set = list()
+        print(user_id, message_type)
+        if message_type == 'message':
+            query_set = models.Message.objects.filter(m_receive=user_id, m_is_send=0).values('m_content')
+            if query_set:
+                query_set = [query for query in query_set]
+            models.Message.objects.filter(m_receive=user_id, m_is_send=0).update(m_is_send=1)
+        elif message_type == 'chat':
+            query_set = models.Chat.objects.filter(c_receive=user_id, c_is_send=0).values('c_content')
+            if query_set:
+                query_set = [query for query in query_set]
+            models.Chat.objects.filter(c_receive=user_id, c_is_send=0).update(c_is_send=1)
+        return query_set
+    print(request.websocket)
+    id = int(request.GET.get('id'))
+    # check is  or not login
+    if not clients.get(id):
+        clients[id] = request.websocket
+    # first login, but it  has message.
+    chat = get_message(id, message_type='chat')
+    information = get_message(id, message_type='message')
+    send_data = dict()
+    if chat:
+        send_data['chat'] = chat
+    if information:
+        send_data['information'] = information
+    if send_data:
+        clients[id].send(json.dumps(send_data))
+    for message in request.websocket:
+        message = json.loads(message)
+        to_id = int(message['to_id'])
+        chat = str(message.get('data'))
+        information = str(message.get('information'))
+        to_send = int(message['to_send'])
+        send_data = dict()
+        m_body = {
+            'm_send': to_id,
+            'm_receive': to_send,
+            'm_content': information,
+        }
+        c_body = {
+            'c_send': to_id,
+            'c_receive': to_send,
+            'c_content': chat,
+        }
+        if chat:
+            models.Chat.objects.create(**c_body)
+        if information:
+            models.Message.objects.create(**m_body)
+        if clients.get(to_send):
+            data = get_message(to_send, message_type='chat')
+            information = get_message(to_send, message_type='message')
+            if data:
+                send_data['chat'] = data
+            print(send_data)
+            if information:
+                send_data['information'] = information
+            print(send_data)
+            clients[to_send].send(json.dumps(send_data))  # 发送消息到客户端
+        else:
+            request.websocket.send('send success, but receive is logout，'.encode('utf-8'))
 
 
-def ceshi(request):
-    from . import qiniyuntest
-    if request.method == 'GET':
-        return  qiniyuntest.ceshi(request)
-    elif request.method == 'POST':
-        return qiniyuntest.upload(request)
+@require_websocket
+def echo_once(request):
+    message = request.websocket.wait()
+    request.websocket.send(message)
 
 
-def upload(request):
-    pass
+# @accept_websocket
+# def message(request):
+#     if not request.is_websocket():
+#         pass
+#     if request.method == 'GET':
+#         u_id = request.GET.get('u_id')
+#         if u_id in clients:
+
+
+
+
 
 
 

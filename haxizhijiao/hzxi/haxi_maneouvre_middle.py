@@ -21,27 +21,30 @@ class ManeouvreMiddle(object):
 
     @staticmethod
     def create_middle_manoeuvre(body, data, text=None):
+        # 核实id
+        if not (models.User.objects.filter(u_id=body['u_id']) and models.Manoeuvre.objects.filter(y_id=body['y_id'])):
+            return 'bad request'
         #  取出文件
-        for name in ['image', 'video', 'file']:
-            file_data, fail_files = [], []
+        fail_files = list()
+        for name in ['image', 'video', 'files']:
+            file_data = list()
             for i in range(1, 11):
                 if not data.get(name+str(i)):
                     break
                 file_data.append(data.get(name+str(i)))
                 # 传出七牛云函数进行储存
             if file_data:
-                print(file_data)
                 url, data = save_qiniuyun.save_niuyun(file_data)
-                print(url, data)
-                fail_files += [i.name for i in data]
+                if data:
+                    fail_files += [i.name for i in data]
                     # if not url:
                     #     assert "save %s qiniuyun failed" % name
                     #     # 删除以保存的部分
                     #     models.ManoeuverMiddle.objects.filter(**body).update(ym_image_url=None, ym_video_url=None, ym_files_url=None)
                     # 保存url到数据库
-                models.ManoeuverMiddle.objects.filter(**body).update(**{'ym_(0)_url'.format(name): ' '.join(url)})
-                if text:
-                    models.Manoeuvre.objects.filter(**body).update(ym_answer=text)
+                models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=body['y_id'], ym_user__u_id=body['u_id']).update(**{'ym_(0)_url'.format(name): ' '.join(url)})
+        if text:
+            models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=body['y_id'], ym_user__u_id=body['u_id']).update(ym_answer=text)
         return fail_files
 
 

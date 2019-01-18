@@ -17,14 +17,21 @@ class HaxiLogin(object):
         try:
             query = models.User.objects.get(u_pid=u_pid, u_pwd=u_pwd)
             data['msg'] = 'login successed'
+            data['name'] = query.u_name
+            data['id'] = query.u_id
             response = JsonResponse(data, status=status.HTTP_200_OK)
             response.set_cookie('is_login', 'True')
             request.session['pid'] = query.u_pid
-            return response
+            response['Access-Control-Allow-Origin'] = "*"
+            # save LoginUser table
+            models.LoginUser.objects.create(l_u_id=query.u_id)
         except models.User.DoesNotExist or models.User.MultipleObjectsReturned:
             data['status'] = 'error'
             data['data'] = 'login failed, PID or password error'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            response = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            response['Access-Control-Allow-Origin'] = "*"
+        return response
+
 
     @staticmethod
     def register(request):
@@ -81,14 +88,14 @@ class HaxiLogin(object):
     def logout(request):
         data = database.data
         body = json.loads(request.body.decode(encoding='utf-8'))
-        u_pid = body.get('u_pid')
-        query = models.User.objects.filter(u_pid=u_pid)
+        u_id = body.get('u_id')
+        query = models.User.objects.filter(u_pid=u_id)
         if not (len(query) == 1):
             data['status'] = 'error'
             data['msg'] = 'not found PID, logout failed'
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
-        del request.session['name']
-        del request.session['pid']
+        # del request.session['name']
+        # del request.session['pid']
         response = JsonResponse(data, status=status.HTTP_200_OK)
         response.set_cookie('is_login', False)
         return response
