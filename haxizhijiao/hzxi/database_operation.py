@@ -30,6 +30,7 @@ class DatabaseOperation(object):
                 print('---none')
 
     def update(self, contions=None, contents=None):
+        print(contions, contents)
         try:
             with transaction.atomic():
                 self.name.objects.filter(**contions).update(**contents)

@@ -16,6 +16,7 @@ class User(models.Model):
     u_id = models.AutoField(primary_key=True)
     u_name = models.CharField(max_length=64)
     u_sex = models.CharField(max_length=16, choices=sex)
+    u_head_portrait = models.CharField(max_length=256, default='/static/img/show.jpg')
     u_age = models.CharField(max_length=16)
     u_pwd = models.CharField(max_length=64, null=True, blank=True, unique=True)
     u_pid = models.CharField(max_length=64, unique=True)

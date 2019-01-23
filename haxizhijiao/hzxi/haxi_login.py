@@ -1,16 +1,18 @@
 # coding: utf-8
 import json
+import copy
 from django.http import JsonResponse
 from rest_framework import status
 from . import models
 from . import database
+from . import haxi_timechange
 
 
 class HaxiLogin(object):
 
     @staticmethod
     def login(request):
-        data = database.data
+        data = copy.deepcopy(database.data)
         body = json.loads(request.body.decode(encoding='utf-8'))
         u_pid = body.get('u_pid')
         u_pwd = body.get('u_pwd')
@@ -32,10 +34,9 @@ class HaxiLogin(object):
             response['Access-Control-Allow-Origin'] = "*"
         return response
 
-
     @staticmethod
     def register(request):
-        data = database.data
+        data = copy.deepcopy(database.data)
         if request.method == 'GET':
             u_pid = str(request.GET.get('u_pid'))
             if not u_pid:
@@ -85,19 +86,37 @@ class HaxiLogin(object):
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def logout(request):
-        data = database.data
+    def logout(request, clients):
+        data = copy.deepcopy(database.data)
         body = json.loads(request.body.decode(encoding='utf-8'))
-        u_id = body.get('u_id')
-        query = models.User.objects.filter(u_pid=u_id)
+        u_id = int(body['u_id']) if body.get('u_id') else None
+        if not u_id:
+            data['status'] = 'error'
+            data['msg'] = 'no Id, logout failed'
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
+        if not clients.get(u_id):
+            data['status'] = 'error'
+            data['msg'] = 'no login, logout failed'
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
+        del clients[u_id]
+        query = models.User.objects.filter(u_id=u_id)
         if not (len(query) == 1):
             data['status'] = 'error'
-            data['msg'] = 'not found PID, logout failed'
-            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            data['msg'] = 'bad request, logout failed'
+            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res['Access-Control-Allow-Origin'] = "*"
+            return res
         # del request.session['name']
         # del request.session['pid']
+        changetime = haxi_timechange.ChangeTime.change_time_to_date('%Y-%m-%d %H:%M:%S')
+        models.LoginUser.objects.filter(l_u_id=u_id, l_islogin=True).update(l_islogin=False, l_changetime=changetime)
         response = JsonResponse(data, status=status.HTTP_200_OK)
         response.set_cookie('is_login', False)
+        response['Access-Control-Allow-Origin'] = "*"
         return response
 
 

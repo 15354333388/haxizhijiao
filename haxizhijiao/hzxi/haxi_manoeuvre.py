@@ -4,6 +4,9 @@ from django.db import transaction
 from . import database_operation
 from . import models
 from . import haxi_simple_model_CRUD
+from . import haxi_timechange
+from . import database
+
 
 class Manoeuvre(object):
 
@@ -12,26 +15,20 @@ class Manoeuvre(object):
         data = haxi_simple_model_CRUD.HaxiSimpleCrud.get(models.Manoeuvre, **body)
         if not data:
             return None
-        l = []
+        l = list()
         for query in data:
             if query.get('y_createtime'):
-                query['y_createtime'] = time.mktime(query['y_createtime'].timetuple())
+                query['y_createtime'] = haxi_timechange.ChangeTime.change_date_to_time(query['y_createtime'])
             if query.get('y_changetime'):
-                query['y_changetime'] = time.mktime(query['y_changetime'].timetuple())
+                query['y_changetime'] = haxi_timechange.ChangeTime.change_date_to_time(query['y_changetime'])
             l.append(query)
         return l
 
-    # @staticmethod
-    # def get_manoeuvre(limit=1, skip=0, desc='-u_id', fields=[], contions={}):
-    #     obj = database_operation.DatabaseOperation(models.Manoeuvre)
-    #     fields = fields if fields else database.manoeuvre_fields.copy()
-    #     return obj.find(fields=fields, contions=contions, limit=limit, skip=skip, desc=desc)
-    #
     @staticmethod
     def create_manoeuvre(contents):
         i = 0
         data = list()
-        with transaction.atomic():
+        with transaction.atomic():  # 开启事务，保障内容的一致性
             for content in contents:
                 if not (content and type(content) == dict):
                     return 'index %s format or content error' % i
@@ -42,7 +39,7 @@ class Manoeuvre(object):
                 id_list = content.get('id_list')
                 for u_id in id_list:
                     fields = {'ym_manoeuvre': models.Manoeuvre.objects.get(y_id=y_id),
-                              'ym_user': models.User.objects.get(u_id=u_id),
+                              'ym_user': models.User.objects.get(u_id=int(u_id)),
                               'ym_timeremaining': content['data']['y_endtime']}
                     models.ManoeuverMiddle.objects.create(**fields)
             u_fields = {
@@ -51,17 +48,8 @@ class Manoeuvre(object):
             }
             models.Incident.objects.create(**u_fields)
             i += 1
-            print(content)
-            from . import database
             queryset = models.Manoeuvre.objects.filter(**content['data']).values(*database.manoeuvre_fields)[0]
-            print(queryset)
             if queryset:
-                # import json
-                # queryset['y_receive'] = (queryset['y_receive'])[1:-1]
-                # import pickle
-
-
-                # print(pickle.loads(bytes(queryset['y_receive'])))
                 data.append(queryset)
         return data
 
@@ -69,19 +57,16 @@ class Manoeuvre(object):
     def update_manoeuvre(contents):
         for content in contents:
             i = 0
-            if not (content and type(content) == dict):
-                return 'content %s type error' % i
-            data = content['data'] # manoeuvre data
-            contions = content['contions'] # manoeuvre contions
-            if data.get('id_list'):
-                receive_id = models.Manoeuvre.objects.get(**contents).y_receive.split(' ')
-            if not database_operation.DatabaseOperation(models.Manoeuvre).update(contions=contions, contents=data):
-                return 'data %s update error' % i
-            # for id in receive_id:
-            #     if id in
-            #     queryset = models.Manoeuvre.objects.filter(**contions)
-            #     for query in queryset:
-            #         models.ManoeuverMiddle.objects.filter(mm_manoeuvre__y_id=query['y_id'])
+            with transaction.atomic():
+                if not (content and type(content) == dict):
+                    return i
+                data = content['data'] # manoeuvre data
+                if data.get('y_endtime'):
+                    data['y_endtime'] = int(data['y_endtime'])
+                    models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=models.Manoeuvre.objects.get(**contions).y_id).\
+                                                                            update({'ym_timeremaining': data['y_endtime']})
+                contions = content['contions'] # manoeuvre contions
+                models.Manoeuvre.objects.filter(**contions).filter(**data) #
         return None
 
     @staticmethod
@@ -90,8 +75,14 @@ class Manoeuvre(object):
         try:
             with transaction.atomic():
                 for contion in contions:
-                    obj = models.Manoeuvre.objects
-                    obj.filter(**contion).delete()
+                    queryset = models.Manoeuvre.objects.filter(**contion)  # 删除manoeuvre
+                    if queryset:
+                        l = list()
+                        for query in queryset:
+                            l.append(query['y_id'])
+                        queryset.delete()
+                    for id in l:
+                        models.Incident.objects.filter(i_table='manoeuvre', i_symbol=id).delete()
                     # models.ManoeuverMiddle.objects.filter(obj.filter(**contion)).delete()
                     i += 1
         except:

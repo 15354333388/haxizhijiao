@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^user/train/$', views.user_train, name='user_train'),
     # url(r'^user/message/$', views.message, name='message'),
     url(r'^user/echo/$', views.echo, name='echo'),
+    # url(r'^user/echo/break/$', views.echo_once, name='echo_break'),
     url(r'^user/examine/$', views.user_examine, name='user_examine'),
     url(r'^user/work/$', views.user_work, name='user_work'),
     url(r'^incident/$', views.incident),

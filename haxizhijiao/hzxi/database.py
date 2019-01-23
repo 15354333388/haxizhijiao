@@ -13,8 +13,10 @@ data = {
 user_fields = [
     'u_id',
     'u_sex',
+    'u_head_portrait',
     'u_age',
     'u_pwd',
+    'u_name',
     'u_pid',
     'u_section',
     'u_group',

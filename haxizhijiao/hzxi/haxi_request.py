@@ -27,3 +27,5 @@ class HaxiRequest(object):
         limit = int(json.loads(body.get('limit'))) if body.get('limit') else None # inquire umber
         skip = int(json.loads(body.get('skip'))) if body.get('skip') else None # inquire start position
         return {'fields': fields, 'contions': contions, 'limit': limit, 'skip': skip}
+
+# data: { contions:{}, fields: [], limit: int, skip: int, desc: str }
