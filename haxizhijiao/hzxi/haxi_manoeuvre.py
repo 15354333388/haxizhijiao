@@ -48,8 +48,10 @@ class Manoeuvre(object):
             }
             models.Incident.objects.create(**u_fields)
             i += 1
-            queryset = models.Manoeuvre.objects.filter(**content['data']).values(*database.manoeuvre_fields)[0]
+            queryset = models.Manoeuvre.objects.filter(**content['data']).values('y_id', 'y_receive')[0]
+            print(queryset)
             if queryset:
+                queryset['type'] = 'manoeuvre'
                 data.append(queryset)
         return data
 

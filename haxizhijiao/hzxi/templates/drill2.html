@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="/static/font/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/drill2.css"/>
+		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>-->
+		<title>演练模块</title>
+	</head>
+	<body>
+		<div class="top">
+			<div class="top_top">
+				<div>
+				<p>登陆|注册</p>
+				<p><input type="text" id="" placeholder="请输入搜索关键词" /><i class="iconfont icon-fangdajing"></i></p>
+				</div>
+			</div>
+			<div class="top_conter">
+				<!--<div class="tupian">
+					<img src="img/22_02.jpg"/>
+				</div>-->
+				<div class="biaoti">
+					<p><img src="/static/img/11.png"/></p>
+				</div>
+				<div class="wenzi">
+					<p>哈尔滨西站职教信息管理平台</p>
+				</div>
+			</div>
+			<div class="top_dibu">
+				<div class="nav">
+					<p><a href="index.html">首页</a></p>
+					<p class="cur"><a>演练模块</a></p>
+					<p><a>考核模块</a></p>
+					<p><a>培训模块</a></p>
+					<p><a>作业模块</a></p>
+					<p><a>综合展示</a></p>
+					<p><a href="personal.html">个人中心</a></p>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+		<div class="banner">
+			<img src="/static/img/banner_03.png"/>
+		</div>
+		<div class="center">
+			<div class="center_top">
+				<p><span>标题</span><span>发布者</span><span>发布日期</span><span>截止日期</span></p>
+			</div>
+			<div class="center_center">
+				<div class="center_box">
+					<div class="center_history">
+						<p class="paixu">1</p>
+						<p class="title tow">无电务人员车站开启和关闭道岔融雪装置无电务人员车站开启和关闭道岔融雪装置
+	关闭道岔融雪装置<img src="/static/img/img_03.png"></p>
+						<p class="publisher tow">张某某fhgh</p>
+						<p class="releasetime">2018.12.28</p>
+						<p class="asof">2018.12.28</p>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="float">
+			<p class="bian"><img src="/static/img/fabbu_03.png"/>发布演练</p>
+			<p class="kong"></p>
+			<p class="bian"><img src="/static/img/huidao_07.png"/>回到顶部</p>
+		</div>
+		<script src="js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+//			$(".center_history p").click(function(){
+//				$(this).addClass("xiahua");
+//				$(this).removeClass("xiahua");
+//			})
+			$(".center_history .tow").hover(function () {
+
+				$(this).addClass("xiahua");
+				
+				$(this).removeClass("default");
+				
+				}, function () {
+				
+				$(this).addClass("default");
+				
+				$(this).removeClass("xiahua");
+				
+				});
+				/*演练历史*/
+				history();
+			function history(){
+				$.ajax({
+				type: "GET", //用POST方式传输
+				url:http+'/hzxi/user/manoeuvre/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data: {
+					desc:JSON.stringify("-y_id")
+				},
+				success: function(data) {
+				
+				if(data.status=="OK"){
+					function timestampToTime(timestamp) {
+			        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			        var Y = date.getFullYear() + '-';
+			        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+			        var D = date.getDate() + ' ';
+			        return Y+M+D;
+			    }
+			    var shijian = timestampToTime(data.data.y_changetime);
+//			    console.log(timestampToTime(1403058804));//2014-06-18 10:33:24
+			    var html="";
+			    for(var i=1; i<data.data.length; i++){
+//			    	$(".center_center").append('<div class="history" data="'+data.data[i].y_id+'"><div class="tupian"><img src="img/black.jpg"/></div><div class="wenzi"><h5><span class="mingzi">'+data.data[i].y_creator+'</span><span class="shijian">'+timestampToTime(data.data[i].y_changetime)+'</span></h5><p class="biaoti">'+data.data[i].y_name+'</p><p>'+data.data[i].y_content+'</p></div></div><div style="clear: both;"></div>');
+			    	$(".center_center").append('<div class="center_box"><div class="center_history"><p class="paixu">'+i+'</p><p class="title tow">'+data.data[i].y_name+'<img src="img/img_03.png"></p><p class="publisher tow">'+data.data[i].y_id+'</p><p class="releasetime">'+timestampToTime(data.data[i].y_changetime)+'</p><p class="asof">'+timestampToTime(data.data[i].y_createtime)+'</p></div><div style="clear: both;"></div></div>')
+			    }
+				}else{
+//					alert(data.msg);
+				}
+				}
+			})
+				}
+		</script>
+	</body>
+</html>

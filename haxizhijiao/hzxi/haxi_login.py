@@ -92,13 +92,15 @@ class HaxiLogin(object):
         u_id = int(body['u_id']) if body.get('u_id') else None
         if not u_id:
             data['status'] = 'error'
-            data['msg'] = 'no Id, logout failed'
+            data['msg'] = 'no ID, logout failed'
+            print(data)
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res
         if not clients.get(u_id):
             data['status'] = 'error'
-            data['msg'] = 'no login, logout failed'
+            data['msg'] = 'account has noe logined, logout failed'
+            print(data)
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res
@@ -106,7 +108,8 @@ class HaxiLogin(object):
         query = models.User.objects.filter(u_id=u_id)
         if not (len(query) == 1):
             data['status'] = 'error'
-            data['msg'] = 'bad request, logout failed'
+            data['msg'] = 'nou found database, logout failed'
+            print(data)
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res

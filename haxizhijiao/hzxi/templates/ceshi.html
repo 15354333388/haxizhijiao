@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+    <meta charset="utf-8">
+    <title>七牛云JS上传文件DEMO</title>
+    <style>
+        *{
+        	padding:0;
+	        margin:0;
+	        list-style:none;
+        }
+        body{
+        	font-size:14px;
+        	}
+        .upload-btns{
+        	padding-top:40px;
+        	text-align:center;
+        	}
+        .upload-select{
+        	display:inline-block;
+        	padding:0 20px;
+        	line-height:24px;
+        	background:#f2f2f2;
+        	border:1px solid #eee;
+        	border-radius:6px;
+        	cursor:pointer;
+        	}
+        .upload-info{
+        	font-size:12px;
+        	color:#666;
+        	display:inline-block;
+        	margin:0 10px;
+        	}
+        .upload-submit{
+        	display:block;
+        	height:36px;
+        	width:200px;
+        	margin:20px auto 0;
+        	cursor:pointer;
+        	}
+        .upload-percent{
+        	color:#999;
+        	font-size:12px;
+        	height:2em;
+        	line-height:2em;
+        	}
+        .show-result{
+        	text-align:center;
+        	}
+        .show-result h1{
+        	font-size:18px;
+        	padding:20px 0 20px;
+        	}
+        .show-list{
+        	padding:0 50px;
+        	}
+        .show-list li{
+        	line-height:3em;
+        	border-bottom:1px solid #e8e8e8;
+        	}
+    </style>
+    </head>
+    <body>
+        <div class="upload-btns">
+            <span id="pickfiles" class="upload-select">选择文件</span>
+            <span class="upload-info"></span>
+            <button class="upload-submit">点击上传</button>
+            <span class="upload-percent"></span>
+        </div>
+        <div class="show-result">
+            <h1>上传后的文件列表</h1>
+            <ul class="show-list"></ul>
+        </div>
+        <script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="/static/js/qiniu.min.js"></script>
+        <script type="text/javascript" src="/static/js/plupload.full.min.js"></script>
+        <script>
+            //上传时需要用到uptoken可以从“http://jssdk.demo.qiniu.io/uptoken”这个网址中获取
+            var $showList = $('.show-list');
+            var $uploadInfo = $('.upload-info');
+            var $uploadSubmit = $('.upload-submit');
+            var $uploadPercent = $('.upload-percent');
+            var $uploader, $file = '',
+                $temp = [];
+            //设置上传文件名称-开始
+                function setUploadInfo(status, value) {
+                    if(status) {
+                        $uploadInfo.text(value)
+                    } else {
+                        $uploadInfo.text('未选择任何文件')
+                    }
+                }
+                //初始化
+                setUploadInfo(false)
+            //设置上传文件名称-结束
+ 
+            //初始化上传文件插件
+            $uploader = Qiniu.uploader({
+                runtimes: 'html5,html4',
+                browse_button: 'pickfiles',
+                uptoken: 'anEC5u_72gw1kZPSy3Dsq1lo_DPXyvuPDaj4ePkN:lLKc-0kzlpIJs_amrKJmch08MVo=:eyJkZWxldGVBZnRlckRheXMiOjEsInNjb3BlIjoianNzZGsiLCJkZWFkbGluZSI6MTU0Njg0NTgzNX0=', //需要先获取这个token
+                domain: 'http://qiniu-plupload.qiniudn.com/',
+                get_new_uptoken: false,
+                max_file_size: '50mb',
+                max_retries: 3,
+                multi_selection: false,
+                dragdrop: false,
+                chunk_size: '4mb',
+                auto_start: false,
+                unique_names: false , 
+                save_key: false,
+                init: {
+                    'FilesAdded': function(up, files) {
+                        //选择文件后进行操作
+                        setUploadInfo(true, "你选择了“ " + files[0].name + " ”")
+                        $file = files[0].name;
+                    },
+                    'BeforeUpload': function(up, file) {
+                        //上传之前可能的操作
+                    },
+                    'UploadProgress': function(up, file) {
+                        $uploadPercent.text('上传中-' + file.percent + '%')
+                    },
+                    'FileUploaded': function(up, file, info) {
+
+//						 JSON.parse(info)
+						 console.log(info)
+						               	console.log(info.response)
+                        $uploadPercent.text('');
+                        $temp.push(file.name);
+                        $showList.prepend('<li>http://7xocov.com1.z0.glb.clouddn.com/' + file.name + '</li>')
+                    },
+                    'Error': function(up, err, errTip) {
+                        //如果报错可能的操作
+                        console.log(err);
+                    }
+                }
+            })
+            
+            //点击图片上传按钮-开始
+            $uploadSubmit.on('click', function() {
+                if($file === '') {
+                    //判断选择的文件是否为空
+                    alert('请选择你要上传的文件！')
+                } else {
+                    //判断在这个列表中是否已经有同一个文件名
+                    for(let i = 0; i < $temp.length; i++) {
+                        if($file === $temp[i]) {
+                            alert('列表中已经上传了该文件')
+                            return false;
+                        }
+                    }
+                    //执行上传命令
+                    $uploader.start()
+                }
+            })
+            //点击图片上传按钮-结束
+        </script>
+    </body>
+</html>

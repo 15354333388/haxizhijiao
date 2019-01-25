@@ -1,26 +1,93 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="/static/font/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/font2/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="/static/css/personal.css"/>
-		<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-		<title>个人页面</title>
+		<!--<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>-->
+		<title>个人中心</title>
+		<style>
+			.right p{
+				width: 800px;
+				height: 35px;
+		}
+		</style>
 	</head>
-	
 	<body>
 		<div class="top">
-			<p><span id="name">郑富勇</span><a>注销</a></p>
+			<div class="top_top">
+				<div>
+				<p class="denglu"><span class="no1">登陆|注册</span><span class="no2"></span></p>
+				<p><input type="text" id="" placeholder="请输入搜索关键词" /><i class="iconfont icon-fangdajing"></i></p>
+				</div>
+			</div>
+			<div class="top_conter">
+				<!--<div class="tupian">
+					<img src="img/22_02.jpg"/>
+				</div>-->
+				<div class="biaoti">
+					<p><img src="/static/img/11.png"/></p>
+				</div>
+				<div class="wenzi">
+					<p>哈尔滨西站职教信息管理平台</p>
+				</div>
+			</div>
+			<div class="top_dibu">
+				<div class="nav">
+					<p><a href="/hzxi/index/">首页</a></p>
+					<p><a href="/hzxi/index/manoeuvre/">演练模块</a></p>
+					<p><a>考核模块</a></p>
+					<p><a>培训模块</a></p>
+					<p><a>作业模块</a></p>
+					<p><a>综合展示</a></p>
+					<p class="cur"><a>个人中心</a></p>
+				</div>
+				<div style="clear: both;"></div>
+				
+			</div>
+			
+			<div class="tuisong">
+				<div id="messagecontainer">
+					
+				</div>
+			</div>
+			<div class="zhezhao">
+			<div class="tanchuang">
+				<div class="nav">
+					<p class="cor">登录</p>
+					<p>注册<i class="iconfont icon-fork"></i></p>
+				</div>
+				<div style="clear: both;"></div>
+				<div class="drbox xbox on">
+					<h5>账号密码登录</h5>
+					<p><input type="text" id="zhanghao" placeholder="账号" /></p>
+					<p><input type="password" id="password" placeholder="密码" /></p>
+					<input type="button" id="btn" value="登录" />
+					<p class="dib"><span class="wj">忘记密码</span><span class="zc">注册新账号</span></p>
+				</div>
+				<div class="zcbox xbox">
+					<h5>免费注册账号</h5>
+					<p><input type="text"  placeholder="昵称" class="nicheng"/></p>
+					<p><input type="text"  name="tel" placeholder="手机号" class="tel"/></p>
+					<p><input type="text"  placeholder="输入密码" class="paw"/></p>
+					<p><input type="text"  placeholder="再次输入密码" class="paw2"/></p>
+					<p><input type="text"  placeholder="填写验证码" class="yaoqingma"/><input type="button" onclick="settime(this)" id="huhoqu" value="获取验证码" /></p>
+					<input type="button" id="lijizc" value="立即注册" />
+				</div>
+			</div>
+		</div>
 		</div>
 		<div class="zong">
 			<div class="left">
-				<p class="cur"><span>个人信息</span></p>
+				<p class="cut"><span>个人信息</span></p>
 				<p><span>个人成绩</span></p>
 				<p class="xinxi"><span>站内信息</span><i id="shuzi">3</i></p>
 			</div>
 			<div class="right">
 				<div class="box on">
-					<p><span class="xiao">用户名称：</span><input type="text" name="" id="u_id" value="1" /></p>
+					<p><span class="xiao">用户名称：</span><input type="text" name="" id="u_d" value="" /></p>
 					<p><span class="xiao">用户性别：</span><input type="text" name="" id="u_sex" value="" /></p>
 					<p><span class="xiao">用户年龄：</span><input type="text" name="" id="u_Gender" value="" /></p>
 					<p><span class="xiao">用户工号：</span><input type="text" name="" id="u_gonghao" value="" /></p>
@@ -31,151 +98,264 @@
 					<p><span>用户家庭住址：</span><input type="text" name="" id="u_address" value="" /></p>
 					<p><span>用户工作意愿：</span><input type="text" name="" id="u_willingness" value="" /></p>
 					<p><span class="xiao">用户特长：</span><input type="text" name="" id="u_speciality" value="" /></p>
+					<p><span class="xiao">用户头像: </span><img src="" id="toxiang" style="width: 50px; height: 50px;"/></p>
 					
 					<p><input type="button" id="xiugai" class="xiugai" value="修改信息" /></p>
 				</div>
 				<div class="box">
 					<p>个人成绩</p>
 				</div>
-				<div class="box">
-					<p>消息内容1</p>
-					<p>消息内容2</p>
-					<p>消息内容3</p>
-					<p>消息内容4</p>
-					<p>消息内容5</p>
-					<p>消息内容6</p>
+				<div class="box xiaooo">
+		
 				</div>
 			</div>
 		</div>
-		<div class="fabu">
-			<h5>发布演练</h5>
-			<div class="center">
-				<p><span>演练标题：</span><input type="text" name="biaoti" id="" value="" /></p>
-				<p><span>演练内容：</span><input type="text" name="neirong" id="" value="" /></p>
-				<p><span>演练限时：</span><input type="text" name="xianshi" id="" value="" /></p>
-				<p>提示：演练限时以分钟为单位</p>
-				<input type="button" id="fabu" class="fabu2" value="发布演练" />
-			</div>
-		</div>
+		<script src="/static/js/http.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-		/*获取信息*/
-		// setInterval(function(){
-//          host = window.location.host
-//          $.post("http://"+host+"/index.php/Article/cpMes/value/1");
-//             $.ajax({
-// 				type: "GET", //用GET方式传输
-// 				url:'/hzxi/user/news/', //目标地址
-// 				dataType: "JSON", //数据格式:JSON
-// 				data: {
-// 					contions: JSON.stringify({'u_pid':localStorage.getItem('u_pid')}),
-// 					u_pid: localStorage.getItem('u_pid')
-// 				},
-// 				success: function(data) {
-// 				if(data.status == "OK") {
-// 					$("#shuzi").css('display','block');
-// 					alert("修改成功");
-// 					$("#shuzi").html();
-// 				} else {
-// 					$("#shuzi").css('display','none');
-// 					alert(data.msg);
-// 				}
-// 			}
-// 		})
-//
-        // });
+			$(".no2").click(function(){
+			 $.ajax({
+				type: "POST", //用POST方式传输
+				headers:{'X-CSRFToken': getCookie('csrftoken')},
+				url:http+'/hzxi/logout/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				async : false,
+				data: JSON.stringify({
+					u_id: localStorage.getItem('uid')
+				}),
+				success: function(data) {
+
+				if(data.status=="OK"){
+						$(".zhezhao").css('display','block');
+				}else{
+					alert(data.msg);
+					}
+					}
+			})
+		})
+			
 			/*渲览个人信息*/
-				$(function foo(){
+				function foo(){
 					$.ajax({
 							type: "GET", //用GET方式传输
-							url:'/hzxi/user/manoeuvration/', //目标地址
+							url:http+'/hzxi/user/management/', //目标地址
 							dataType: "JSON", //数据格式:JSON
-							data: {
-								contions: JSON.stringify({'y_id': 1})
+							data:{
+								contions:JSON.stringify({'u_pid':$("#zhanghao").val()})
+						                   	
 							},
 							success: function(data) {
 								if(data.status == "OK") {
-								    for (var i=0; i<data.data.length;i++){
-								        $("#name").html(data.data[i].u_name);
-								        $("#u_id").val(data.data[i].u_name);
-									$("#u_sex").val(data.data[i].u_sex);
-									$("#u_Gender").val(data.data[i].u_age);
-									$("#u_gonghao").val(data.data[i].u_pid);
-									$("#u_position").val(data.data[i].u_post);
-									$("#u_department").val(data.data[i].u_section);
-									$("#u_training").val(data.data[i].u_trainlist);
-									$("#u_post").val(data.data[i].u_joblistid);
-									$("#u_address").val(data.data[i].u_home);
-									$("#u_willingness").val(data.data[i].u_jobwill);
-									$("#u_speciality").val(data.data[i].u_skill);
-									}
-
+									
+									$("#name").html(data.data[0].u_name);
+									$("#u_d").val(data.data[0].u_id);
+									$("#u_sex").val(data.data[0].u_sex);
+									$("#u_Gender").val(data.data[0].u_age);
+									$("#u_gonghao").val(data.data[0].u_pid);
+									$("#u_position").val(data.data[0].u_post);
+									$("#u_department").val(data.data[0].u_section);
+									$("#u_training").val(data.data[0].u_trainlist);
+									$("#u_post").val(data.data[0].u_joblistid);
+									$("#u_address").val(data.data[0].u_home);
+									$("#u_willingness").val(data.data[0].u_jobwill);
+									$("#u_speciality").val(data.data[0].u_skill);
+									$("#toxiang").attr('src',http+data.data[0].u_head_portrait)
 								} else {
 									alert(data.msg);
 								}
 							}
 						})
-				})
-				
-			/*点击修改信息*/
+				}
+				/*点击修改信息*/
 			$("#xiugai").click(function(){
 				$.ajax({
 						type: "UPDATE", //用GET方式传输
-						url:'/hzxi/user/information/', //目标地址
+						url:http+'/hzxi/user/management/', //目标地址
+						headers:{'X-CSRFToken': getCookie('csrftoken')},
 						dataType: "JSON", //数据格式:JSON
-						data: JSON.stringify({
-							u_pid: localStorage.getItem('u_pid'),
-							u_name:$("#u_id").val(),
-							u_sex:$("#u_sex").val(),
-							u_age:$("#u_Gender").val(),
-							u_post:$("#u_position").val(),
-							u_section:$("#u_department").val(),
-							u_trainlist:$("#u_training").val(),
-							u_joblistid:$("#u_post").val(),
-							u_home:$("#u_address").val(),
-							u_jobwill:$("#u_willingness").val(),
-							u_skill:$("#u_speciality").val()
-						}),
+						data: JSON.stringify(  {
+							update:[{contions:{u_id:$("#u_d").val()},content:{
+								u_name:$("#u_d").val(),
+								u_sex:$("#u_sex").val(),
+								u_age:$("#u_Gender").val(),
+							}}]}),
+							
+						
 						success: function(data) {
 							if(data.status == "OK") {
 								alert("修改成功")
-								// foo();
-//								window.location.reload();
+								foo();
 							} else {
 								alert(data.msg);
 							}
 						}
 					})
 			})
-			/*tab循环*/
+				
 			$(".left p").click(function() {
-         			$(".left p").eq($(this).index()).addClass("cur").siblings().removeClass('cur');
+         			$(".left p").eq($(this).index()).addClass("cut").siblings().removeClass('cut');
          			localStorage.setItem("cat_id",$(this).attr('data'));
         			$(".box").hide().eq($(this).index()).show();
         			/*点击分类获取所属产品列表*/
     		});
-    		/*发布演练*/
-    		$("#fabu").click(function(){
-    			$.ajax({
-						type: "POST", //用GET方式传输
-						url:'/hzxi/user/manoeuvration/', //目标地址
+			/*登录弹窗*/
+        	$("body").on("click",".denglu",function(){
+        		$(".zhezhao").css('display','block');
+        	})
+        	$("body").on("click",".icon-fork",function(){
+        		$(".zhezhao").css('display','none');
+        	})
+//      	/*登录注册切换*/
+//      	$("body").on("click",".nav p",function(){
+//	         	$(".nav p").eq($(this).index()).addClass("cor").siblings().removeClass('cr');
+//	        	$(".xbox").hide().eq($(this).index()).show();
+//  		});	
+			function getCookie (name) {
+      			var value = '; ' + document.cookie
+      			var parts = value.split('; ' + name + '=')
+      			if (parts.length === 2){
+      			    return parts.pop().split(';').shift()
+      			}
+			}
+			 /*登录*/
+			$("body").on("click","#btn",function(){
+				$.ajax({
+				type: "POST", //用POST方式传输
+				headers:{'X-CSRFToken': getCookie('csrftoken')},
+				url:http+'/hzxi/login/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data:
+					JSON.stringify({
+			            u_pid:$("#zhanghao").val(),
+						u_pwd:$("#password").val(),        	
+				}),
+				success: function(data) {
+					if(data.status=="OK"){
+						alert("登录成功");
+						localStorage.setItem("uid",$("#zhanghao").val());
+						$(".zhezhao").css('display','none');
+						$(".no2").html('切换登陆');
+						$(".no1").html(data.name)
+						/*创建连接*/
+						$(function () {
+				            if (window.s) {
+				                window.s.close()
+				                // $('#messagecontainer').prepend('<p>' + e.data + '</p >');
+				                //  window.s.send(JSON.stringify({$('#fa').val(),$('#fa').val(),}));
+				            }
+				            /*创建socket连接*/
+				            var socket = new WebSocket("ws://" + '127.0.0.1:80' + "/hzxi/user/echo/?id=" + data.id);
+				            socket.onopen = function () {
+				                console.log('WebSocket open');//成功连接上Websocket
+				            };
+				            socket.onmessage = function (e) {
+				            	var att=$.parseJSON(e.data);
+								console.log(att)
+				                $('#messagecontainer').prepend('<p>' + "有一条演练消息"+ '</p>');
+//				                $('.xiaoxi').prepend('<p>'+a.information[0].m_content["y_id"]+ '</p>');
+				            };
+				            // Call onopen directly if socket is already open
+				            if (socket.readyState == WebSocket.OPEN) socket.onopen();
+				            window.s = socket;
+//				     
+//				        //如果未连接到websocket
+//				        $('#send_message').click(function () {
+//				            if (!window.s) {
+//				                alert("websocket未连接.");
+//				            } else {
+//				                window.s.send(JSON.stringify({
+//				                    'data': $('#message').val(),
+//				                    'to_id': $('#fa').val(),
+//				                    'to_send': $('#shou').val()
+//				                }));//通过websocket发送数据
+//				            }
+//				        });
+//				        $('#close_websocket').click(function () {
+//				            if (window.s) {
+//				                window.s.close();//关闭websocket
+//				                console.log('websocket已关闭');
+//				            }
+//				        });
+				   });
+				   foo();
+				   /*查看个人演练历史*/
+					$.ajax({
+						type: "GET", //用GET方式传输
+						url:http+'/hzxi/message/', //目标地址
 						dataType: "JSON", //数据格式:JSON
-						data: JSON.stringify({
-							y_name:$("#biaoti").val(),
-							y_content:$("#neirong").val(),
-							y_creator:localStorage.getItem('u_pid'),
-							pidlist:[u_pid,01]
-						}),
+						data:{
+							contions:JSON.stringify({m_receive:localStorage.getItem('uid')}),
+							desc:JSON.stringify('-m_createtime'),
+							limit: JSON.stringify(5)
+						},
 						success: function(data) {
-							if(data.status == "OK") {
-								alert("发布成功");
-//								foo();
-								window.location.reload();
-							} else {
-								alert(data.msg);
+							var html="";
+						if(data.status =="OK") {
+								for(var i=0; i<data.data.length; i++){
+								$(".xiaooo").append('<p><span>'+data.data[i].y_content+'</span>     <span>'+data.data[i].y_name+'</span></p>');
+								}
+											
+						} else {
+							alert(data.msg);
 							}
-						}
-					})
-    		})
+							}
+						})
+					}else{
+						alert(data.msg);
+					}
+					
+				}
+				})
+					//window.location.href="index.html";
+			});
+			 /*关闭网页事件*/
+			    window.onbeforeunload= function(event){  
+				              $.ajax({
+								type: "POST", //用POST方式传输
+								headers:{'X-CSRFToken': getCookie('csrftoken')},
+								url:http+'/hzxi/logout/', //目标地址
+								dataType: "JSON", //数据格式:JSON
+								async : false, 
+								data: JSON.stringify({
+									u_id: localStorage.getItem('uid')
+								}),
+								success: function(data) {
+								
+								if(data.status=="OK"){
+								
+								}else{
+									alert(data.msg);
+								}
+								}
+							})     
+				     }   
+			
+			
+//			/*关闭网页事件*/
+//			 window.onbeforeunload= function(event) { 
+//			  if (window.s) {
+//				    window.s.close();//关闭websocket
+//				    console.log('websocket已关闭');
+//				}
+//			 console.log(0)
+//		        $.ajax({
+//				type: "POST", //用POST方式传输
+//				headers:{'X-CSRFToken': getCookie('csrftoken')},
+//				url:http+'/hzxi/logout/', //目标地址
+//				dataType: "JSON", //数据格式:JSON
+//				async : false, 
+//				data: JSON.stringify({
+//					u_id: localStorage.getItem('uid')
+//				}),
+//				success: function(data) {
+//				
+//				if(data.status=="OK"){
+//				
+//				}else{
+//					alert(data.msg);
+//				}
+//				}
+//			})
+//		    }; 
 		</script>
 	</body>
 </html>

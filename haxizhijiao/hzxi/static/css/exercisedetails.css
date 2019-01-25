@@ -1,0 +1,159 @@
+*{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.top{
+	width: 100%;
+}
+.top .top_top{
+	min-width: 1200px;
+	width: 100%;
+	background-color: #026eb7;
+}
+.top .top_top div{
+	position: relative;
+	width: 1200px;
+	height: 50px;
+	margin: 0 auto;
+}
+.top .top_top div p{
+	float: left;
+	margin-top: 10px;
+	font-size: 14px;
+	color: #fff;
+	height: 30px;
+	line-height: 30px;
+}
+.top .top_top div p:last-child{
+	position: absolute;
+	right: 0;
+	width: 310px;
+	background-color: #dddddd;
+	height: 32px;
+}
+.top .top_top div p:last-child input{
+	outline:none;
+	margin-left: 2px;
+	padding: 0;
+	width: 250px;
+	height: 29px;
+	border: 0;
+}
+.top .top_top div p:last-child i{
+	margin-left: 20px;
+	color: #5e5e5e;
+}
+
+.top_conter{
+	background: url(../img/22_02.jpg);
+	width: 100%;
+	height: 150px;
+	min-width: 1200px;
+}
+.top_conter .tupian{
+	width: 100%;
+	min-width: 1200px;
+}
+.top_conter .tupian img{
+	width: 100%;
+	height: 150px;
+}
+.top_conter .biaoti{
+	margin: 0 auto;
+	width: 1200px;
+}
+.top_conter .biaoti img{
+	margin-top: 18px;
+}
+.top_conter .wenzi{
+	width: 1200px;
+	margin: 0 auto;
+	text-align: center;
+}
+.top_conter .wenzi p{
+	margin-top: 10px;
+	font-weight: bold;
+	font-size: 27px;
+	color: #fff;
+	font-family: "微软雅黑";
+}
+
+.top_dibu{
+	width: 100%;
+	min-width: 1200px;
+	
+	background-color: #0072b7;
+}
+.top_dibu .nav{
+	width: 1200px;
+	margin: 0 auto;
+}
+.top_dibu .nav p{
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	float: left;
+	width: 171px;
+	color: #fff;
+}
+.top_dibu .nav p a{
+	color: #fff;
+	text-decoration: none;
+}
+.top_dibu .nav .cur{
+	background: url(../img/sanjiao_03.png)bottom center no-repeat;
+}
+
+/*center*/
+.center{
+	background-color: #e5e5e5;
+	width: 1190px;
+	margin: 20px auto;
+	padding: 10px 10px;
+}
+.center .neirong .wenzi{
+	font-size: 16px;
+	text-indent: 25px;
+}
+.center .neirong .zuozhe{
+	text-align: center;
+}
+.center .neirong .biaoti{
+	font-size: 15px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-weight: bold;
+	color: #000;
+}
+.center .neirong .dianzan{
+	text-align: right;
+}
+.center .neirong .dianzan i{
+	font-style: normal;
+}
+.center .upload .ltbox{
+	display: inline-block;
+	width: 1100px;
+	margin-left: 50px;
+	margin-right: 10px;
+	margin-top: 20px;
+}
+.center .upload .ltbox .tupian img{
+	width: 50px;
+}
+.center .upload .ltbox div{
+	margin-right: 16px;
+	float: left;
+}
+.center .upload .ltbox .wenzi2{
+	width: 1000px;
+}
+.center .upload .ltbox .wenzi2 img{
+	width: 300px;
+	height: 150px;
+}
+.center .upload .ltbox .wenzi2 .answer_content video{
+	margin-left: 10px;
+}

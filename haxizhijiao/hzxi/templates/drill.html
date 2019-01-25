@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="/static/font/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/drill.css"/>
+		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>-->
+		<title>演练</title>
+	</head>
+	<style type="text/css">
+
+		#toti{
+			display: inline-block;
+			cursor:pointer;
+		}
+		.center_top p{
+			cursor:pointer;
+		}
+		.nav p{
+			cursor:pointer;
+		}
+		.top_top p{
+			cursor:pointer;
+		}
+	</style>
+	<body>
+		<div class="top">
+			<div class="top_top">
+				<div>
+				<p class="denglu"><span class="no1">登陆|注册</span><span class="no2"></span></p>
+				<p><input type="text" id="" placeholder="请输入搜索关键词" /><i class="iconfont icon-fangdajing"></i></p>
+				</div>
+			</div>
+			<div class="top_conter">
+				<!--<div class="tupian">
+					<img src="img/22_02.jpg"/>
+				</div>-->
+				<div class="biaoti">
+					<p><img src="/static/img/11.png"/></p>
+				</div>
+				<div class="wenzi">
+					<p>哈尔滨西站职教信息管理平台</p>
+				</div>
+			</div>
+			<div class="top_dibu">
+				<div class="nav">
+					<p><a href="/hzxi/index/">首页</a></p>
+					<p class="cur"><a>演练模块</a></p>
+					<p><a>考核模块</a></p>
+					<p><a>培训模块</a></p>
+					<p><a>作业模块</a></p>
+					<p><a>综合展示</a></p>
+					<p><a href="/hzxi/user/center/">个人中心</a></p>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+		<div class="center">
+			<div class="center_top">
+				<p class="xuan ylian">演练历史</p>
+				<p class="keshi">发布演练</p>
+			</div>
+			<div class="center_center yanlishi on">
+				<!--<div class="history">
+					<div class="tupian">
+						<img src="img/black.jpg"/>
+					</div>
+					<div class="wenzi">
+						<h5><span class="mingzi">嘟嘟熊</span><span class="shijian">2018-12-18 07:37</span></h5>
+						<p class="biaoti">但是开发计划的时间覅快捷付款</p>
+						<p>爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+							贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+							贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+							贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了</p>
+						<p class="anniu" style="display: none;"><span class="shanchu">删除</span></p>
+						<p class="zan" style="text-align: right;"  onClick="event.cancelBubble = true"><i class="iconfont icon-zan1"></i></p>
+					</div>
+				</div>
+				<div style="clear: both;"></div>-->
+			</div>
+			<div class="center_center fffbu">
+				<div class="department">
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+					<p>**科</p>
+				</div>
+				<div style="clear: both;"></div>
+				<div class="staff" style="display: none;">
+					<div class="checkBox">
+						<input type="checkbox" name="" id="checkall">全选/取消
+					</div>
+					<div class="xuanxiang">
+						<p><input type="checkbox" name="check" data="1" class="check1" onclick="selectPa();">子选框1</p>
+			            <p><input type="checkbox" name="check" data="2" class="check1" onclick="selectPa();">子选框1</p>
+			            <p><input type="checkbox" name="check" data="3" class="check1" onclick="selectPa();">子选框1</p>
+			            <p><input type="checkbox" name="check" data="4" class="check1" onclick="selectPa();">子选框1</p>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="release">
+					<p><span>演练标题:</span><input type="text" id="y_name" placeholder="" /></p>
+					<p><span>演练内容:</span><input type="text" id="y_content" placeholder="" /></p>
+					<p><span>演练限时:</span><input type="text" id="y_endtime" placeholder="" /></p>
+					<p><span>发布人员:</span><input type="text" id="y_creator" placeholder="" /></p>
+					<input type="button" id="fabu" class="fabu" value="发布演练" />
+				</div>
+			</div>
+		</div>
+		<div class="zhezhao">
+			<div class="tanchuang">
+				<div class="nav">
+					<p class="cor">登录</p>
+					<p>注册<i class="iconfont icon-fork"></i></p>
+				</div>
+				<div style="clear: both;"></div>
+				<div class="drbox xbox on">
+					<h5>账号密码登录</h5>
+					<p><input type="text" id="zhanghao" placeholder="账号" /></p>
+					<p><input type="password" id="password" placeholder="密码" /></p>
+					<input type="button" id="btn" value="登录" />
+					<p class="dib"><span class="wj">忘记密码</span><span class="zc">注册新账号</span></p>
+				</div>
+				<div class="zcbox xbox">
+					<h5>免费注册账号</h5>
+					<p><input type="text"  placeholder="昵称" class="nicheng"/></p>
+					<p><input type="text"  name="tel" placeholder="手机号" class="tel"/></p>
+					<p><input type="text"  placeholder="输入密码" class="paw"/></p>
+					<p><input type="text"  placeholder="再次输入密码" class="paw2"/></p>
+					<p><input type="text"  placeholder="填写验证码" class="yaoqingma"/><input type="button" onclick="settime(this)" id="huhoqu" value="获取验证码" /></p>
+					<input type="button" id="lijizc" value="立即注册" />
+				</div>
+			</div>
+		</div>
+		<button id="tuichu">退出</button>
+	
+	</body>
+	<script src="/static/js/formDate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		$(".no2").click(function(){
+			 $.ajax({
+				type: "POST", //用POST方式传输
+				headers:{'X-CSRFToken': getCookie('csrftoken')},
+				url:http+'/hzxi/logout/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				async : false, 
+				data: JSON.stringify({
+					u_id: localStorage.getItem('uid')
+				}),
+				success: function(data) {
+								
+				if(data.status=="OK"){
+						$(".zhezhao").css('display','block');		
+				}else{
+					alert(data.msg);
+					}
+					}
+			})
+		})
+		$("body").on("click",".history",function(){
+				location.href="/hzxi/manoeuvre/information/";
+			})
+			
+			/*登录弹窗*/
+        	$("body").on("click",".no1",function(){
+        		$(".zhezhao").css('display','block');
+        	})
+        	$("body").on("click",".icon-fork",function(){
+        		$(".zhezhao").css('display','none');
+        	})
+//      	/*登录注册切换*/
+//      	$("body").on("click",".nav p",function(){
+//	         	$(".nav p").eq($(this).index()).addClass("cor").siblings().removeClass('cr');
+//	        	$(".xbox").hide().eq($(this).index()).show();
+//  		});	
+			function getCookie (name) {
+      			var value = '; ' + document.cookie
+      			var parts = value.split('; ' + name + '=')
+      			if (parts.length === 2){
+      			    return parts.pop().split(';').shift()
+      			}
+			}
+
+			 /*登录*/
+			$("body").on("click","#btn",function(){
+				$.ajax({
+				type: "POST", //用POST方式传输
+				headers:{'X-CSRFToken': getCookie('csrftoken')},
+				url:http+'/hzxi/login/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data:
+					JSON.stringify({
+			            u_pid:$("#zhanghao").val(),
+						u_pwd:$("#password").val(),
+				}),
+				success: function(data) {
+					if(data.status=="OK"){
+					localStorage.setItem("uid",$("#zhanghao").val());
+					localStorage.setItem("name",data.name)
+						alert("登录成功");
+						$(".zhezhao").css('display','none');
+						$(".no2").html('切换登陆');
+						$(".no1").html(data.name);
+						/*创建连接*/
+						function fee() {
+				            if (window.s) {
+				                window.s.close()
+				            }
+				            /*创建socket连接*/
+				            window.s = new WebSocket("ws://" + '127.0.0.1:80' + "/hzxi/user/echo/?id=" + data.id);
+				            window.s.onopen = function () {
+				                console.log('WebSocket open');//成功连接上Websocket
+				            };
+				            window.s.onmessage = function (e) {
+				                console.log('message: ' + e.data);//打印出服务端返回过来的数据
+				                $('#messagecontainer').prepend('<p>' + e.data + '</p>');
+				            };
+				            // Call onopen directly if socket is already open
+				            if (window.s.readyState == WebSocket.OPEN) window.s.onopen();
+//				            window.s = socket;
+				        //如果未连接到websocket
+
+//				        $('#close_websocket').click(function () {
+//				            if (window.s) {
+//				                window.s.close();//关闭websocket
+//				                console.log('websocket已关闭');
+//				            }
+//				        });
+				    };
+						fee();
+					}else{
+						alert(data.msg);
+					}
+
+				}
+				})
+        });
+        /*执行函数*/
+			
+			history();
+			
+			
+			/*演练历史*/
+			function history(){
+				$.ajax({
+				type: "GET", //用POST方式传输
+				url:http+'/hzxi/user/manoeuvre/', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data: {
+					desc:JSON.stringify("-y_id")
+				},
+				success: function(data) {
+				
+				if(data.status=="OK"){
+					function timestampToTime(timestamp) {
+			        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+			        var Y = date.getFullYear() + '-';
+			        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+			        var D = date.getDate() + ' ';
+			        var h = date.getHours() + ':';
+			        var m = date.getMinutes() + ':';
+			        var s = date.getSeconds();
+			        return Y+M+D+h+m+s;
+			    }
+			    var shijian = timestampToTime(data.data.y_changetime);
+//			    console.log(timestampToTime(1403058804));//2014-06-18 10:33:24
+			    var html="";
+			    for(var i=0; i<data.data.length; i++){
+			    	$(".yanlishi").append('<div class="history" id="toti" data="'+data.data[i].y_id+'"><div class="tupian"><img src="/static/img/black.jpg"/></div><div class="wenzi"><h5><span class="mingzi">'+data.data[i].y_creator+'</span><span class="shijian">'+timestampToTime(data.data[i].y_changetime)+'</span></h5><p class="biaoti">'+data.data[i].y_name+'</p><p>'+data.data[i].y_content+'</p></div></div><div style="clear: both;"></div>');
+//			    	$(".department").append('<p>'+data.data[i].+'</p>')
+			    }
+				}else{
+//					alert(data.msg);
+				}
+				}
+			})
+				}
+			
+			
+//			/*科室*/
+//			$(".keshi").click(function(){
+//				
+//			})
+			
+			/**/
+			$(".center_top p").click(function() {
+				history();
+	         	$(".center_top p").eq($(this).index()).addClass('xuan').siblings().removeClass('xuan');
+	        	$(".center_center").hide().eq($(this).index()).show();
+	       	})
+			$(".department p").click(function(){
+				$(this).addClass('ke');
+				$(this).siblings().removeClass('ke');
+				$(".staff").css('display','block')
+			})
+			
+			/*ajax*/
+			    $('#fabu').click(function(){
+			        var checkID = [];//定义一个空数组
+			
+			        $("input[name='check']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+			            checkID[i] =$(this).attr('data');
+			        });
+			        console.log(checkID)
+			        $.ajax({
+					type: "POST", //用POST方式传输
+					headers:{'X-CSRFToken': getCookie('csrftoken')},
+					url:http+'/hzxi/user/manoeuvre/', //目标地址
+					dataType: "JSON", //数据格式:JSON
+					data:
+						JSON.stringify({contents : [
+			                {
+			                   'data':{
+			                   'y_name': $("#y_name").val(),
+			                   'y_content': $("#y_content").val(),
+			                   'y_creator': $("#y_creator").val(),
+			                   'y_endtime': $("#y_endtime").val(),
+			                   'y_receive': checkID
+			                   },
+			                   'id_list': checkID
+			                },
+			                
+			            ]}),
+					success: function(data) {
+					if(data.status=="OK"){
+						alert("发布成功");
+						for(var i=0; i<data.data.length;i++){
+							var a=data.data[i].y_receive;
+							var b = a.split(' ');
+//							var c = b.split("'");
+							 parseInt(b);
+							console.log(b);
+							for(var j=0; j<b.length;j++){
+								console.log(b[j]);
+								if (!window.s) {
+				                alert("websocket未连接.");
+				            } else {
+				                window.s.send(JSON.stringify({
+				                    'information': {'y_id':data.data[0].y_id,'type':data.data[0].type},
+				                    'to_id': $("#y_creator").val(),
+				                    'to_send': b[j]
+				                }));//通过websocket发送数据
+				            }
+							}
+							
+						}
+						$(".yanlishi").css('display','block');
+						$(".fffbu").css('display','none');
+						$(".ylian").css('background-color','#0086B3');
+						$(".keshi").css('background-color','#A9A9A9');
+						history();   
+					}else{
+						alert(data.msg);
+					}
+					}
+				})
+				})
+			    $("#tuichu").click(function(){
+			    	 if (window.s) {
+						window.s.close();//关闭websocket
+						console.log('websocket已关闭');
+					}
+			    })
+			    /*关闭网页事件*/
+			    window.onbeforeunload= function(event){  
+				              $.ajax({
+								type: "POST", //用POST方式传输
+								headers:{'X-CSRFToken': getCookie('csrftoken')},
+								url:http+'/hzxi/logout/', //目标地址
+								dataType: "JSON", //数据格式:JSON
+								async : false, 
+								data: JSON.stringify({
+									u_id: localStorage.getItem('uid')
+								}),
+								success: function(data) {
+								
+								if(data.status=="OK"){
+								
+								}else{
+									alert(data.msg);
+								}
+								}
+							})     
+				     }   
+			
+			
+			/**/
+			 $("#checkall").on("click",function(){
+				if($(this).is(':checked')){
+					$('input[name="check"]').each(function(){
+						$(this).prop("checked",true);
+					});
+				}else{
+					$('input[name="check"]').each(function(){
+						$(this).prop("checked",false);
+					});
+				}
+			});
+			
+		</script>
+</html>

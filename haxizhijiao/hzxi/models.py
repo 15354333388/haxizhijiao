@@ -174,8 +174,9 @@ class Incident(models.Model):
 class Message(models.Model):
     m_id = models.AutoField(primary_key=True)
     m_send = models.IntegerField()
+    m_type = models.CharField(max_length=64, default='manoeuvre')
     m_receive = models.IntegerField()
-    m_content = models.CharField(max_length=2048)
+    m_symbol = models.IntegerField()
     m_createtime = models.DateTimeField(auto_now_add=True)
     m_is_send = models.BooleanField(default=False)
 

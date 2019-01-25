@@ -23,6 +23,7 @@
 	font-size: 14px;
 	color: #fff;
 	height: 30px;
+	width: 100px;
 	line-height: 30px;
 }
 .top .top_top div p:last-child{
@@ -104,6 +105,128 @@
 .top_dibu .nav .cur{
 	background: url(../img/sanjiao_03.png)bottom center no-repeat;
 }
+/*center-history*/
+.center{
+	width: 1200px;
+	margin: 10px auto;
+}
+.center .center_top{
+	height: 40px;
+	text-align: center;
+}
+.center .center_top p{
+	margin-left: 25px;
+	background-color: #A9A9A9;
+	border-radius: 10px;
+	line-height: 40px;
+	width: 550px;
+	float: left;
+}
+.center .center_top .xuan{
+	background-color: #0086B3;
+	color: #fff;
+}
+.center .center_center{
+	display: none;
+	margin-top: 20px;
+	width: 1200px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+.center .center_center.on{
+	display: block;
+}
+.center .center_center .history{
+	width: 1180px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 20px;
+}
+.center .center_center .history .tupian img{
+	width: 50px;
+}
+.center .center_center .history div{
+	margin-right: 16px;
+	float: left;
+}
+.center .center_center .history div:last-child{
+	margin-right: 0;
+	border-bottom: 1px solid #ccc;
+}
+.center .center_center .history div h5 .mingzi{
+	color: #0000FF;
+}
+.center .center_center .history div p{
+	margin-top: 10px;
+	width: 1114px;
+}
+.center .center_center .history div .biaoti{
+	margin-top: 0;
+	font-size: 15px;
+	font-weight: bold;
+	color: #656590;
+}
+/*center-release*/
+.center .center_center .department{
+	width: 1100px;
+	margin: 0 auto;
+}
+.center .center_center .department .ke{
+	background-color: #026EB7;
+	color: #fff;
+}
+.center .center_center .department p{
+	margin-top: 10px;
+	text-align: center;
+	margin-left: 5px;
+	width: 95px;
+	background-color: #A9A9A9;
+	border-radius: 5px;
+	float: left;
+}
+.center .center_center .staff{
+	
+	width: 1090px;
+	margin: 20px auto;
+}
+.center .center_center .staff .xuanxiang{
+	margin: 0 auto;
+	width: 1100px;
+}
+.center .center_center .staff .xuanxiang p{
+	text-align: center;
+	width: 95px;
+	margin-left: 5px;
+	float: left;
+}
+.center .center_center .release{
+	text-align: center;
+	width: 1100px;
+	margin: 0 auto;
+}
+.center .center_center .release p{
+	height: 35px;
+	line-height: 35px;
+}
+.center .center_center .release input{
+	outline:none;
+	border: 0;
+	border-bottom: 1px solid #ccc;
+	height: 30px;
+	width: 93%;
+}
+.center .center_center .release .fabu{
+	margin: 20px auto;
+	width: 800px;
+	height: 40px;
+	background-color: #55A532;
+	color: #fff;
+	border: 0;
+	border-radius: 10px;
+}
+.upload{
+	text-align: center;
+}
 /*登录弹窗*/
 	.zhezhao{
 		text-align: center;
@@ -122,7 +245,7 @@
 		background-color: #fff;
 	}
 	.tanchuang .nav{
-		text-align: center;
+		text-align: ccenter
 	}
 	.tanchuang .nav p{
 		
@@ -244,62 +367,5 @@
 		bottom: 0;
 		width: 200px;
 		height: 100px;
-		background-color: rgba(0,0,0,0.5);
+		background-color: #9D9D9D;
 	}
-/*个人中心*/
-.zong{
-			width: 1200px;
-			border: 1px solid #ccc;
-			background-color: #f5f5f5;
-			display: flex;
-			margin: 20px auto;
-		}
-		.xiao{
-			padding-right: 32px;
-		}
-		.box{
-			display: none;
-		}
-		.box.on{
-			display: block;
-		}
-		.box p{
-			width: 800px;
-			height: 40px;
-			/*line-height: 0.4rem;*/
-			border-bottom: 1px solid #000;
-		}
-		.box p input{
-			width: 650px;
-			height: 32px;
-			border: 0px;
-			outline:none;
-			cursor: pointer;
-			background-color: #f5f5f5;
-		}
-		.left{
-			width: 300px;
-			margin-right: 50px;
-			border-right: 1px solid #ccc;
-			text-align: center;
-		}
-		.left p{
-			cursor: pointer;
-			border-bottom: 1px solid #ccc;
-			height: 150px;
-			line-height: 150px;
-		}
-		.left .cut{
-			color: #6464e5;
-		}
-		.right{
-			display: flex;
-			flex-direction:column;
-		}
-		.right p{
-			width: 800px;
-			height: 35px;
-		}
-		.box p:last-child{
-			border: 0;
-		}

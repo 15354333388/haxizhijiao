@@ -2,17 +2,17 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<link rel="stylesheet" type="text/css" href="/static/web/font/iconfont.css"/>
-		<link rel="stylesheet" type="text/css" href="/static/web/css/index.css"/>
-		<script src="/static/web/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/web/js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="/static/font/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css"/>
+		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>-->
 		<title>首页</title>
 	</head>
 	<body>
 		<div class="top">
 			<div class="top_top">
 				<div>
-				<p>登陆|注册</p>
+				<p class="denglu"><span class="no1">登陆|注册</span><span class="no2"></span></p>
 				<p><input type="text" id="" placeholder="请输入搜索关键词" /><i class="iconfont icon-fangdajing"></i></p>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 					<img src="img/22_02.jpg"/>
 				</div>-->
 				<div class="biaoti">
-					<p><img src="/static/web/img/11.png"/></p>
+					<p><img src="/static/img/11.png"/></p>
 				</div>
 				<div class="wenzi">
 					<p>哈尔滨西站职教信息管理平台</p>
@@ -29,13 +29,13 @@
 			</div>
 			<div class="top_dibu">
 				<div class="nav">
-					<p class="cur">首页</p>
-					<p>演练模块</p>
-					<p>考核模块</p>
-					<p>培训模块</p>
-					<p>作业模块</p>
-					<p>综合展示</p>
-					<p>个人中心</p>
+					<p class="cur"><a>首页</a></p>
+					<p><a href="/hzxi/index/manoeuvre/">演练模块</a></p>
+					<p><a>考核模块</a></p>
+					<p><a>培训模块</a></p>
+					<p><a>作业模块</a></p>
+					<p><a>综合展示</a></p>
+					<p><a href="/hzxi/user/center/">个人中心</a></p>
 				</div>
 				<div style="clear: both;"></div>
 			</div>
@@ -43,7 +43,7 @@
 		<div class="center">
 			<div class="center_top">
 				<div class="left">
-					<h5><img src="/static/web/img/tubiao_03.png"/>哈尔滨西站铁路局职教科<span>MORE>></span></h5>
+					<h5><img src="/static/img/tubiao_03.png"/>哈尔滨西站铁路局职教科<span>MORE>></span></h5>
 					<div class="biaotou">
 						<p>科室</p>
 						<p>姓名</p>
@@ -99,100 +99,126 @@
 				</div>
 				<div class="right">
 					<div class="right-top">
-						<p>演练历史</p>
-						<p>培训历史</p>
-						<p>考核历史</p>
+						<p id="yanlian">演练历史</p>
+						<p id="peixun">培训历史</p>
+						<p id="kaohe">考核历史</p>
 					</div>
 					<div class="right-zhong on">
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时2小时<span>2018-12-25</span></p>
+					</div>
+					<div class="right-zhong">
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时1小时<span>2018-12-25</span></p>
+					</div>
+					<div class="right-zhong">
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>无电务人员车站开启和关闭道岔融雪装置     限时3小时<span>2018-12-25</span></p>
 					</div>
 				</div>
 			</div>
 			<div class="center-center">
 				<div class="left">
-					<h5><img src="/static/web/img/tubiao_03.png"/>综合简介<span>MORE>></span></h5>
+					<h5><img src="/static/img/tubiao_03.png"/>综合简介<span>MORE>></span></h5>
 					<div class="left-center">
-						<p><span>演练</span><img src="/static/web/img/tongji_20.png"/></p>
-						<p><span>培训</span><img src="/static/web/img/tongji_20.png"/></p>
-						<p><span>考核</span><img src="/static/web/img/tongji_20.png"/></p>
-						<p><span>作业</span><img src="/static/web/img/tongji_20.png"/></p>
+						<p><span>演练</span><img src="/static/img/tongji_20.png"/></p>
+						<p><span>培训</span><img src="/static/img/tongji_20.png"/></p>
+						<p><span>考核</span><img src="/static/img/tongji_20.png"/></p>
+						<p><span>作业</span><img src="/static/img/tongji_20.png"/></p>
 					</div>
 				</div>
 				<div class="right">
-					<h5><img src="/static/web/img/tubiao_03.png"/>最新演练、培训、考核、作业<span>MORE>></span></h5>
+					<h5><img src="/static/img/tubiao_03.png"/>最新演练、培训、考核、作业<span>MORE>></span></h5>
 					<div class="right-center">
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
-						<p><img src="/static/web/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
+						<p><img src="/static/img/fangkuai_31.png"/>xxx科      李某某                      无电务人员车站开启和关闭道岔融雪装置       ...<span>2018-12-25</span></p>
 					</div>
 				</div>
 			</div>
 			<div class="center-footer">
 				<div class="center-footer-box">
-					<h5><img src="/static/web/img/tubiao_03.png"/>优秀员工<span>MORE>></span></h5>
+					<h5><img src="/static/img/tubiao_03.png"/>优秀员工<span>MORE>></span></h5>
 				</div>
 				<div class="center-footer-box2">
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
-						<p>李某某</p>s
+						<img src="/static/img/touxiang_07.png"/>
+						<p>李某某</p>
 					</div>
 					<div>
-						<img src="/static/web/img/touxiang_07.png"/>
+						<img src="/static/img/touxiang_07.png"/>
 						<p>李某某</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--<script src="js/index.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="/static/js/http.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			if(localStorage.getItem('uid')){
+			
+			$(".no1").css('display','none');
+			$(".no2").css('display','block');
+			$(".no2").html(localStorage.getItem('name'));
+		}else{
+				alert("请先登录");
+			}
 		/*科室人员首次页面*/
 			$(".keleft div p:first-child").addClass('cul');
 			$(".right-top p:first-child").addClass('cur');
 			$.ajax({
 				type: "GET", //用POST方式传输
-				url:'192.168.0.103:80' + '/hzxi/user/management/', //目标地址
+				url:http+'/index.php/beroung/Index/index', //目标地址
 				dataType: "JSON", //数据格式:JSON
 				data: {
 //					contains:JSON.stringify({}),
@@ -203,11 +229,11 @@
 //					u_u_section:JSON.stringify($(".keleft div p:first-child").html())
 				},
 				success: function(data) {
-				if(data.status== 'OK'){
+				if(data.status==ok){
 					var html="";
-					// for(var i=0; i<length;i++){
-					// 	$(".keleft .neirong").html('<p>***</p>')
-					// }
+					for(var i=0; i<data.data.length;i++){
+						$(".keleft .neirong").html("<p>'+data.data[i].u_section+'</p>")
+					}
 				}else{
 					alert(data.msg);
 				}
@@ -217,7 +243,7 @@
 			$(".keleft div p").click(function(){
 				$.ajax({
 				type: "GET", //用POST方式传输
-				url:'192.168.0.103:80' + '/hzxi/user/management/', //目标地址
+				url:http+'/index.php/beroung/Index/index', //目标地址
 				dataType: "JSON", //数据格式:JSON
 				data: {
 					contains:JSON.stringify({}),
@@ -228,41 +254,21 @@
 					u_u_section:JSON.stringify($(this).html())
 				},
 				success: function(data) {
-				if(data.status== 'OK'){
-					// for(var i=0; i<length;i++){
-					// 	$(".xingmin .neirong").html('<p>**科</p>')
-					// }
+				if(data.status==ok){
+					for(var i=0; i<length;i++){
+						$(".xingmin .neirong").html('<p>**科</p>')
+					}
 				}else{
 					alert(data.msg);
 				}
 				}
 			})
 			})
+			
 		/*历史详情首次页面*/
 		$.ajax({
 				type: "GET", //用POST方式传输
-				url:'192.168.0.103:80' +'/hzxi/user/manoeuvre/', //目标地址s
-				dataType: "JSON", //数据格式:JSON
-				data: {
-						contions:JSON.stringify({'y_finished': '0'}),
-					    fields:JSON.stringify('y_id y_content y_createtime'),
-					    limit:JSON.stringify('7'),
-	//				    page:JSON.stringify(0),
-	//				    desc:JSON.stringify('')
-	//					u_u_section:JSON.stringify($(this).html())
-				},
-				success: function(data) {
-				if(data.status=='ok'){
-				}else{
-					alert(data.msg);
-				}
-				}
-			})
-			/*点击演练历史*/
-			$("#yanlian").click(function(){
-				$.ajax({
-				type: "GET", //用POST方式传输
-				url:'192.168.0.103:80' +'/index.php/beroung/Index/index', //目标地址
+				url:http+'/index.php/beroung/Index/index', //目标地址
 				dataType: "JSON", //数据格式:JSON
 				data: {
 						contains:JSON.stringify({}),
@@ -273,19 +279,64 @@
 	//					u_u_section:JSON.stringify($(this).html())
 				},
 				success: function(data) {
-				if(data.status=='ok'){
+				if(data.status=='ok'){	
+				}else{
+					alert(data.msg);
+				}
+				}
+			})
+			/*点击演练历史*/
+			$("#yanlian").click(function(){
+				$.ajax({
+				type: "GET", //用POST方式传输
+				url:http+'/index.php/beroung/Index/index', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data: {
+						contains:JSON.stringify({}),
+					    fields:JSON.stringify('y_id y_content y_createtime'),
+					    limit:JSON.stringify('7'),
+	//				    page:JSON.stringify(0),
+	//				    desc:JSON.stringify('')
+	//					u_u_section:JSON.stringify($(this).html())
+				},
+				success: function(data) {
+				if(data.status=='ok'){	
 				}else{
 					alert(data.msg);
 				}
 				}
 			})
 			})
-
-		/*点击考核历史*/
+		
+		
+			/*点击培训历史*/
+			$("#peixun").click(function(){
+				$.ajax({
+				type: "GET", //用POST方式传输
+				url:http+'/index.php/beroung/Index/index', //目标地址
+				dataType: "JSON", //数据格式:JSON
+				data: {
+						contains:JSON.stringify({}),
+					    fields:JSON.stringify('y_id y_content y_createtime'),
+					    limit:JSON.stringify('7'),
+	//				    page:JSON.stringify(0),
+	//				    desc:JSON.stringify('')
+	//					u_u_section:JSON.stringify($(this).html())
+				},
+				success: function(data) {
+				if(data.status=='ok'){	
+				}else{
+					alert(data.msg);
+				}
+				}
+			})
+			})
+		
+			/*点击考核历史*/
 			$("#kaohe").click(function(){
 				$.ajax({
 				type: "GET", //用POST方式传输
-				url:'192.168.0.103:80' + '/hzxi/user/manoeuvre/', //目标地址
+				url:http+'/index.php/beroung/Index/index', //目标地址
 				dataType: "JSON", //数据格式:JSON
 				data: {
 						contains:JSON.stringify({}),
@@ -296,108 +347,33 @@
 	//					u_u_section:JSON.stringify($(this).html())
 				},
 				success: function(data) {
-				if(data.status=='ok'){
+				if(data.status=='ok'){	
 				}else{
 					alert(data.msg);
 				}
 				}
 			})
 			})
-
-
-			/*点击培训历史*/
-			$("#peixun").click(function(){
-				$.ajax({
-				type: "GET", //用POST方式传输
-				url: '192.168.0.103:80' + '/hzxi/user/manoeuvre/', //目标地址
-				dataType: "JSON", //数据格式:JSON
-				data: {
-						contains:JSON.stringify({}),
-					    fields:JSON.stringify('y_id y_content y_createtime'),
+	
+/*最新考核、作业、培训*/
+		$.ajax({
+			type: "GET", //用POST方式传输
+			url:http+'/index.php/beroung/Index/index', //目标地址
+			dataType: "JSON", //数据格式:JSON
+			data: {
+				contains:JSON.stringify({}),
+					   	fields:JSON.stringify('i_id y_content'),
 					    limit:JSON.stringify('7'),
 	//				    page:JSON.stringify(0),
 	//				    desc:JSON.stringify('')
-	//					u_u_section:JSON.stringify($(this).html())
-				},
-				success: function(data) {
-				if(data.status=='ok'){
-				}else{
-					alert(data.msg);
-				}
-				}
-			})
-			})
-
-		/*最新考核、作业、培训*/
-		$.ajax({
-			type: "GET", //用POST方式传输
-			url:'192.168.0.103:80' + '/hzxi/incident/', //目标地址
-			dataType: "JSON", //数据格式:JSON
-	// 		data: {
-	// 			contains:JSON.stringify({}),
-	// 				   	fields:JSON.stringify('i_id y_content'),
-	// 				    limit:JSON.stringify('7'),
-	// //				    page:JSON.stringify(0),
-	// //				    desc:JSON.stringify('')
-	// 		},
+			},
 			success: function(data) {
-			if(data.status=='OK'){
+			if(data.status==ok){	
 			}else{
 				alert(data.msg);
 			}
 			}
 		})
-
-			/*点击考核历史*/
-			// $("#kaohe").click(function(){
-			// 	$.ajax({
-			// 	type: "GET", //用POST方式传输
-			// 	url:http+'/index.php/beroung/Index/index', //目标地址
-			// 	dataType: "JSON", //数据格式:JSON
-			// 	data: {
-			// 			contains:JSON.stringify({}),
-			// 		   	fields:JSON.stringify('y_id y_content y_createtime'),
-			// 		    limit:JSON.stringify('7'),
-	//				    page:JSON.stringify(0),
-	//				    desc:JSON.s
-			
-///*历史详情首次页面*/
-//	$.ajax({
-//			type: "GET", //用POST方式传输
-//			url:http+'/index.php/beroung/Index/index', //目标地址
-//			dataType: "JSON", //数据格式:JSON
-//			data: {},
-//			success: function(data) {
-//			if(data.status==ok){	
-//			}else{
-//				alert(data.msg);
-//			}
-//			}
-//		})
-//
-//	/*点击演练历史*/
-//	
-//
-//
-//	/*点击培训历史*/
-//	
-//
-//	/*点击考核历史*/
-//	
-//
-///*最新考核、作业、培训*/
-//		$.ajax({
-//			type: "GET", //用POST方式传输
-//			url:http+'/index.php/beroung/Index/index', //目标地址
-//			dataType: "JSON", //数据格式:JSON
-//			data: {},
-//			success: function(data) {
-//			if(data.status==ok){	
-//			}else{
-//				alert(data.msg);
-//			}
-//			}
-//		})
 			
 			
 			$(".right-top p").click(function() {
@@ -408,7 +384,6 @@
 	         	$(".keleft .neirong p").eq($(this).index()).addClass('cul').siblings().removeClass('cul');
 	        	$("").hide().eq($(this).index()).show();
 	       })
-
 		</script>
 	</body>
 </html>

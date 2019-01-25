@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import copy
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -18,7 +19,8 @@ from . import haxi_user
 from . import haxi_work
 from . import haxi_examine_bank
 from . import models
-import copy
+from . import haxi_message
+
 # Create your views here.
 
 clients = dict()
@@ -31,6 +33,12 @@ clients = dict()
 def CRS(res):  # 后端解决ajax跨域
     res['Access-Control-Allow-Origin'] = "*"
     return res
+
+
+def OPTION():  # 解决跨域非简单请求
+    body = dict()
+    res = JsonResponse(body, status=status.HTTP_204_NO_CONTENT)
+    res = CRS(res)
 
 
 @api_view(['GET'])
@@ -71,7 +79,7 @@ def register(request):
 
 # logout user
 # @permissions.is_login
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def logout(request):
     return haxi_login.HaxiLogin.logout(request, clients)
 
@@ -84,9 +92,7 @@ def logout(request):
 def user_management(request):
     data = copy.deepcopy(database.data)
     if request.method == 'OPTIONS':
-        body = dict()
-        res = JsonResponse(body, status=status.HTTP_204_NO_CONTENT)
-        res = CRS(res)
+        res = OPTION()
         res['Access-Control-Allow-Methods'] = "POST, GET, DELETE, UPDATE, OPTIONS"
         return res
     if request.method == 'GET':
@@ -221,6 +227,21 @@ def user_manoeuvre(request):
         return CRS(res)
 
 
+# manoeuvre home page
+def manoeuvre_index(request):
+    return render(request, 'drill.html')
+
+
+#  show single manoeuvre message
+def manoeuvre_information(request):
+    return render(request, 'exercisedetails.html')
+
+
+#  show user information
+def user_center(request):
+    return  render(request, 'personal.html')
+
+
 # manoeuvre_middle view
 @api_view(['GET', 'POST'])
 def manoeuvre_middle(request):
@@ -246,12 +267,13 @@ def manoeuvre_middle(request):
         d['u_id'], d['y_id'] = int(body.get('u_id')), int(body.get('y_id'))
         text = str(body.get('words'))
         result = haxi_maneouvre_middle.ManeouvreMiddle.create_middle_manoeuvre(d, request.FILES, text=text)
-        if result:
+        if isinstance(result, int):
             data['status'] = 'error'
             data['msg'] = result
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
             res['Access-Control-Allow-Origin'] = "*"
             return res
+        data['data'] = result
         res = JsonResponse(data, status=status.HTTP_200_OK)
         res['Access-Control-Allow-Origin'] = "*"
         return res
@@ -282,10 +304,12 @@ def user_train(request):
             res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
         result = haxi_train.Train.create_train(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_201_CREATED)
+            res = CRS(JsonResponse(data, status=status.HTTP_201_CREATED))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return res
 
     elif request.method == 'UPDATE': # user send manoeuvre answer.
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -293,13 +317,16 @@ def user_train(request):
         if not (contents and type(contents) == dict):
             data['status'] = 'error'
             data['msg'] = 'create train failed, because data type is error'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return  res
         result = haxi_train.Train.update_train(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_200_OK)
+            res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return  res
 
 # train_middle view
 @api_view(['GET'])
@@ -312,9 +339,12 @@ def train_middle(request):
         if not result:
             data['status'] = 'error'
             data['msg'] = 'user not found'
-            res = JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+            res = CRS(JsonResponse(data, status=status.HTTP_404_NOT_FOUND))
+            return res
         data['data'] = [query for query in result]
-        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+        return res
+
 
 
 # user_exam funcation
@@ -329,9 +359,11 @@ def user_examine(request):
         if not result:
             data['status'] = 'error'
             data['msg'] = 'get train failed'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         data['data'] = result
-        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+        return res
 
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -339,13 +371,16 @@ def user_examine(request):
         if not (contents and type(contents) == list):
             data['status'] = 'error'
             data['msg'] = 'create examine failed, because data type is error'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         result = haxi_examine_bank.Examine.create_examine(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_201_CREATED)
+            res = CRS(JsonResponse(data, status=status.HTTP_201_CREATED))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return res
 
     elif request.method == 'UPDATE':  # user send manoeuvre answer.
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -353,13 +388,16 @@ def user_examine(request):
         if not (contents and type(contents) == dict):
             data['status'] = 'error'
             data['msg'] = 'create examine failed, because data type is error'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         result = haxi_examine_bank.Examine.update_examine(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_200_OK)
+            res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return res
 
 
 # user_work view
@@ -374,9 +412,11 @@ def user_work(request):
         if not result:
             data['status'] = 'error'
             data['msg'] = 'get train failed'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         data['data'] = result
-        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+        return res
 
     elif request.method == 'POST':
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -384,13 +424,16 @@ def user_work(request):
         if not (contents and type(contents) == list):
             data['status'] = 'error'
             data['msg'] = 'create work failed, because data type is error'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         result = haxi_work.Work.create_work(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_201_CREATED)
+            res = CRS(JsonResponse(data, status=status.HTTP_201_CREATED))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return res
 
     elif request.method == 'UPDATE':  # user send manoeuvre answer.
         body = json.loads(request.body.decode(encoding='utf-8'))
@@ -398,13 +441,16 @@ def user_work(request):
         if not (contents and type(contents) == dict):
             data['status'] = 'error'
             data['msg'] = 'create work failed, because data type is error'
-            res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+            return res
         result = haxi_work.Work.update_work(contents)
         if not result:
-            res = JsonResponse(data, status=status.HTTP_200_OK)
+            res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+            return res
         data['status'] = 'error'
         data['msg'] = result
-        res = JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        res = CRS(JsonResponse(data, status=status.HTTP_400_BAD_REQUEST))
+        return res
 
 
 def incident(request):
@@ -417,9 +463,11 @@ def incident(request):
         if not result:
             data['status'] = 'error'
             data['msg'] = 'not found incident'
-            res = JsonResponse(data, status=status.HTTP_404_NOT_FOUND)
+            res = CRS(JsonResponse(data, status=status.HTTP_404_NOT_FOUND))
+            return res
         data['data'] = result
-        res = JsonResponse(data, status=status.HTTP_200_OK)
+        res = CRS(JsonResponse(data, status=status.HTTP_200_OK))
+        return res
 
 
 @accept_websocket
@@ -428,13 +476,15 @@ def echo(request):
         query_set = list()
         print(user_id, message_type)
         if message_type == 'message':
-            query_set = models.Message.objects.filter(m_receive=user_id, m_is_send=0).values('m_content')
-            if query_set:
-                query_set = [query for query in query_set]
+            queryset = models.Message.objects.filter(m_receive=user_id, m_is_send=0).values('m_symbol', 'm_type')
+            for query in queryset:
+                l = haxi_manoeuvre.Manoeuvre.get_manoevure({'contions': {'y_id': query['m_symbol']}, 'fields': database.manoeuvre_fields})
+                query_set += l
             models.Message.objects.filter(m_receive=user_id, m_is_send=0).update(m_is_send=1)
         elif message_type == 'chat':
             query_set = models.Chat.objects.filter(c_receive=user_id, c_is_send=0).values('c_content')
             if query_set:
+                print(query_set)
                 query_set = [query for query in query_set]
             models.Chat.objects.filter(c_receive=user_id, c_is_send=0).update(c_is_send=1)
         return query_set
@@ -452,7 +502,6 @@ def echo(request):
         send_data['information'] = information
     if send_data:
         clients[id].send(json.dumps(send_data))
-    print('.....................')
     for message in request.websocket:
         print(message)
         if message == None:
@@ -460,13 +509,15 @@ def echo(request):
         message = json.loads(message)
         to_id = int(message['to_id'])
         chat = str(message.get('data'))
-        information = str(message.get('information'))
+        information = message.get('information')
         to_send = int(message['to_send'])
         send_data = dict()
+        print(information)
         m_body = {
             'm_send': to_id,
             'm_receive': to_send,
-            'm_content': information,
+            'm_type': information['type'],
+            'm_symbol': int(information['y_id']),
         }
         c_body = {
             'c_send': to_id,
@@ -482,14 +533,28 @@ def echo(request):
             information = get_message(to_send, message_type='message')
             if data:
                 send_data['chat'] = data
-            print(send_data)
             if information:
                 send_data['information'] = information
-            print(send_data)
             clients[to_send].send(json.dumps(send_data))  # 发送消息到客户端
         else:
             request.websocket.send('send success, but receive is logout，'.encode('utf-8'))
 
+
+@api_view(['GET', 'POST', 'UPDATE'])
+def message(request):
+    data = copy.deepcopy(database.data)
+    if request.method == 'GET':
+        print(request.GET)
+        body = haxi_request.HaxiRequest.get_request_contions(request)
+        body['desc'] = json.loads(request.GET.get('desc')) if request.GET.get('desc') else 'm_id'
+        body['fields'] = body['fields'] if body['fields'] else database.message_fields
+        result = haxi_message.Message.get_message(body)
+        if not result:
+            data['error'] = 'status'
+            data['msg'] = 'not found manoeuvre'
+            return CRS(JsonResponse(data, status=status.HTTP_404_NOT_FOUND))
+        data['data'] = result
+        return CRS(JsonResponse(data, status=status.HTTP_200_OK))
 
 # @require_websocket
 # def echo_once(request):

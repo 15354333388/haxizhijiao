@@ -34,6 +34,7 @@ class ManeouvreMiddle(object):
             return 'bad request'
         #  取出文件
         success_url = list()
+        response_url = list()
         try:
             with transaction.atomic():
                 for name in ['image', 'video', 'files']:
@@ -56,20 +57,21 @@ class ManeouvreMiddle(object):
                             haxi_qiniuyun.Qiniuyun.save_qiniuyun(relative_url, absolute_url)  # 文件绝对路径
                             files_url.append('http://pksdg2zat.bkt.clouddn.com' + '/' + absolute_url)
                             success_url.append(absolute_url)
+                            response_url.append('http://pksdg2zat.bkt.clouddn.com' + '/' + relative_url)
                             for t in range(3):
-                                retDate, infoDate = haxi_qiniuyun.save_niuyun(file_data)
-                                if retDate:
-                                    break
-                                if t == 2:
-                                    os.remove(absolute_url)
-                                    raise SaveQiniuyunError('%s保存到七牛云失败' % file_data.name)
+                                retDate, infoDate = haxi_qiniuyun.Qiniuyun.save_qiniuyun(relative_url, absolute_url)
+                                # if retDate:
+                                #     break
+                                # if t == 2:
+                                #     os.remove(absolute_url)
+                                #     raise SaveQiniuyunError('%s保存到七牛云失败' % file_data.name)
                             os.remove(absolute_url)  # 删除本地文件
                             #  保存url到数据库
-                        models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=body['y_id'], ym_user__u_id=body['u_id']).update(**{'ym_(0)_url'.format(name): ' '.join(files_url)})
+                        models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=body['y_id'], ym_user__u_id=body['u_id']).update(**{'ym_{name}_url'.format(name=name): ' '.join(files_url)})
                 query = models.ManoeuverMiddle.objects.filter(ym_manoeuvre__y_id=body['y_id'], ym_user__u_id=body['u_id'])
-                query.update(ym_finishedtime=haxi_timechange.ChangeTime.change_time_to_date("%Y-%m-%d %:H%:M:%S"), ym_finished=True)
+                query.update(ym_finishedtime=haxi_timechange.ChangeTime.change_time_to_date("%Y-%m-%d %H:%M:%S"), ym_finished=True)
                 models.Incident.objects.filter(i_symbol=body['y_id'], i_table='manoeuvre').\
-                    update(i_symbol=body['y_id'], i_table='manoeuvre', i_endtime=haxi_timechange.ChangeTime.change_time_to_date("%Y-%m-%d %:H%:M:%S"))
+                    update(i_symbol=body['y_id'], i_table='manoeuvre', i_endtime=haxi_timechange.ChangeTime.change_time_to_date("%Y-%m-%d %H:%M:%S"))
                 if text:
                    query.update(ym_answer=text)
         except SaveLocalError as e:
@@ -77,10 +79,10 @@ class ManeouvreMiddle(object):
                 haxi_qiniuyun.Qiniuyun.delete_qiniuyun(successed)
             return e
         except SaveQiniuyunError as e:
-            print(e)
             for successed in success_url:
                 haxi_qiniuyun.Qiniuyun.delete_qiniuyun(successed)
             return e
+        return response_url
         # return fail_files
         # ym_score = models.IntegerField(null=True)
         # ym_timeremaining = models.IntegerField()

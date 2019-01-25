@@ -4,4 +4,4 @@ from  . import models
 
 admin.site.register([models.User, models.Manoeuvre, models.ManoeuverMiddle, models.Work,
                      models.WorkMiddle, models.Examine, models.ExamineMiddle, models.Train,
-                     models.TrainMiddle,models.Incident])
+                     models.TrainMiddle,models.Incident, models.Message])

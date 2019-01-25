@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" type="text/css" href="/static/font/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/exercisedetails.css"/>
+		<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="/static/js/flexible.js" type="text/javascript" charset="utf-8"></script>-->
+		<title>演练详情</title>
+	</head>
+	<body>
+		<div class="top">
+			<div class="top_top">
+				<div>
+				<p class="denglu"><span class="no1">登陆|注册</span><span class="no2"></span></p>
+				<p><input type="text" id="" placeholder="请输入搜索关键词" /><i class="iconfont icon-fangdajing"></i></p>
+				</div>
+			</div>
+			<div class="top_conter">
+				<!--<div class="tupian">
+					<img src="img/22_02.jpg"/>
+				</div>-->
+				<div class="biaoti">
+					<p><img src="/static/img/11.png"/></p>
+				</div>
+				<div class="wenzi">
+					<p>哈尔滨西站职教信息管理平台</p>
+				</div>
+			</div>
+			<div class="top_dibu">
+				<div class="nav">
+					<p><a href="/hzxi/index/">首页</a></p>
+					<p class="cur"><a href="/hzxi/index/manoeuvre/">演练模块</a></p>
+					<p><a>考核模块</a></p>
+					<p><a>培训模块</a></p>
+					<p><a>作业模块</a></p>
+					<p><a>综合展示</a></p>
+					<p><a href="/hzxi/user/center/">个人中心</a></p>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+		<div class="center">
+			<div class="neirong">
+				<h5 class="biaoti">但是开发计划的时间覅快捷付款</h5>
+				<p class="zuozhe">作者：<span>嘟嘟熊 </span>发布时间：<span>2018-12-18 07:37</span></p>
+				<p class="wenzi">爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+					贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+					贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了爱的世界赛欧的决赛的时代马萨卡都没艾斯欧电话赛欧点击搜啊大家阿萨德凯撒基调是大家扫
+					贫困啊搜地决赛的就是靠谱奥斯卡大家爱上看到了</p>
+				<p class="dianzan"><span class="answer">作答人数</span>(<i>10</i>)</p>
+			</div>
+			<div class="upload">
+				<div class="ltbox">
+					<div class="tupian">
+						<img src="/static/img/black.jpg"/>
+					</div>
+					<div class="wenzi2">
+						<h5><span class="mingzi">嘟嘟熊</span><span class="shijian">2018-12-18 07:37</span></h5>
+						<div class="answer_content">
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+						</div>
+					</div>
+				</div>
+				<div class="ltbox">
+					<div class="tupian">
+						<img src="/static/img/black.jpg"/>
+					</div>
+					<div class="wenzi2">
+						<h5><span class="mingzi">嘟嘟熊</span><span class="shijian">2018-12-18 07:37</span></h5>
+						<div class="answer_content">
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+							<video src="/static/img/e63de3484bc50c457e5fd309ded5f7ed.mp4" id="video" controls="controls" style="width:300px;height:150px" onclick="showVideo()"></video>
+						</div>
+						<div class="answer_content2" style="display: none;">
+							<img src="/static/img/black.jpg"/>
+							<img src="/static/img/black.jpg"/>
+							<img src="/static/img/black.jpg"/>
+						</div>
+					</div>
+				</div>
+				<div class="kongbai"></div>
+			</div>
+			<form action="http://127.0.0.1:80/hzxi/user/manoeuvre_middle/" method="POST" id="formLogin" enctype="multipart/form-data">
+					<!--<p><span>做题人员</span><input type="text" id="" value="" /></p>-->
+					<p><span>做题内容</span><input type="text" name="words" id="neirong" value="" /></p>
+					<p><span>上传文件</span><input type="file" name="files1" /></p>
+					<input type="" name="u_id" id="u_id" value="1" hidden="hidden"/>
+					<input type="" name="y_id" id="y_id" value="2" hidden="hidden"/>
+					<input type="button" id="shangc" value="提交演练"/>
+				</form>
+		</div>
+		<script src="/static/js/http.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/formDate.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			if(localStorage.getItem('uid')){
+			
+			$(".no1").css('display','none');
+			$(".no2").css('display','block');
+			$(".no2").html(localStorage.getItem('name'));
+		}else{
+				alert("请先登录");
+			}
+			  $("body").on("click", "#shangc", function() {
+            	$("#formLogin").submit();
+            
+        		})
+
+        $("#formLogin").ajaxForm(function(data) {
+            if (data.status == "OK") {
+                alert("提交成功");
+                $(".kongbai").before('<div class="ltbox"><div class="tupian"><img src="/static/img/black.jpg"/></div><div class="wenzi2"><h5><span class="mingzi">嘟嘟熊</span><span class="shijian">2018-12-18 07:37</span></h5><div class="answer_content2"><img src="'+data.data[0]+'"/></div></div></div>');
+            } else {
+                alert("网络错误！");
+            }
+
+        });
+		</script>
+	</body>
+</html>

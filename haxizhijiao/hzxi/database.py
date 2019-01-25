@@ -162,8 +162,9 @@ incident_fields = [
 message_fields = [
     'm_id',
     'm_send',
+    'm_type',
     'm_receive',
-    'm_content',
+    'm_symbol',
     'm_createtime',
     'm_is_send',
 ]
